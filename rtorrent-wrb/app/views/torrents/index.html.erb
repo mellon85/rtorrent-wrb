@@ -8,7 +8,7 @@
     <th>Downloaded</th>
     <th>Up rate</th>
     <th>Down rate</th>
-    <th>Hash</th>
+    <th>Torrent hash</th>
     <th>Status</th>
   </tr>
 
@@ -20,7 +20,7 @@
     <td><%=h torrent.downloaded %></td>
     <td><%=h torrent.up_rate %></td>
     <td><%=h torrent.down_rate %></td>
-    <td><%=h torrent.hash %></td>
+    <td><%=h torrent.torrent_hash %></td>
     <td><%=h torrent.status %></td>
     <td><%= link_to 'Show', torrent %></td>
     <td><%= link_to 'Edit', edit_torrent_path(torrent) %></td>

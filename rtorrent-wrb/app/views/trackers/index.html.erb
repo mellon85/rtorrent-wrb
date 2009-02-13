@@ -2,13 +2,13 @@
 
 <table>
   <tr>
-    <th>Hash</th>
+    <th>Torrent hash</th>
     <th>Url</th>
   </tr>
 
 <% for trackers in @trackers %>
   <tr>
-    <td><%=h trackers.hash %></td>
+    <td><%=h trackers.torrent_hash %></td>
     <td><%=h trackers.url %></td>
     <td><%= link_to 'Show', trackers %></td>
     <td><%= link_to 'Edit', edit_trackers_path(trackers) %></td>

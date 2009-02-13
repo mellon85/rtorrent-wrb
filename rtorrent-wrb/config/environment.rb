@@ -56,7 +56,7 @@ Rails::Initializer.run do |config|
   # no regular words or you'll be exposed to dictionary attacks.
   config.action_controller.session = {
     :session_key => '_rtorrent-wrb_session',
-    :secret      => '9262eadc6b8ab949b6f345a55a443f7d0ff1771fde457bbd2067c88394a022be50d865c2f779e3384fc5042733436f57fb1860fa3c1eaf0a618b6d26a04b9ab2'
+    :secret      => '228f6cf05878389e521ada7dec7545353dc325a7d01ce3350e615d9b4b3b92dbead78bf9a3455582897cea05915e4eb924921879699235de1760c38039860dbe'
   }
 
   # Use the database for sessions instead of the cookie-based default,

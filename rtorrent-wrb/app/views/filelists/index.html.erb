@@ -2,7 +2,7 @@
 
 <table>
   <tr>
-    <th>Hash</th>
+    <th>Torrent hash</th>
     <th>Name</th>
     <th>Size</th>
     <th>Downloaded</th>
@@ -10,7 +10,7 @@
 
 <% for filelist in @filelists %>
   <tr>
-    <td><%=h filelist.hash %></td>
+    <td><%=h filelist.torrent_hash %></td>
     <td><%=h filelist.name %></td>
     <td><%=h filelist.size %></td>
     <td><%=h filelist.downloaded %></td>

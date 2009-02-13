@@ -7,7 +7,7 @@ one:
   downloaded: 1
   up_rate: 1
   down_rate: 1
-  hash: MyString
+  torrent_hash: MyString
   status: 1
 
 two:
@@ -17,5 +17,5 @@ two:
   downloaded: 1
   up_rate: 1
   down_rate: 1
-  hash: MyString
+  torrent_hash: MyString
   status: 1
