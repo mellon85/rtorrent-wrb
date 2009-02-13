@@ -1,0 +1,20 @@
+<h1>Editing trackers</h1>
+
+<% form_for(@trackers) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :hash %><br />
+    <%= f.text_field :hash %>
+  </p>
+  <p>
+    <%= f.label :url %><br />
+    <%= f.text_field :url %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @trackers %> |
+<%= link_to 'Back', trackers_path %>

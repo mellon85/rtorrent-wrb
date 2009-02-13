@@ -1,0 +1,43 @@
+<p>
+  <b>Name:</b>
+  <%=h @torrent.name %>
+</p>
+
+<p>
+  <b>Size:</b>
+  <%=h @torrent.size %>
+</p>
+
+<p>
+  <b>Upped:</b>
+  <%=h @torrent.upped %>
+</p>
+
+<p>
+  <b>Downloaded:</b>
+  <%=h @torrent.downloaded %>
+</p>
+
+<p>
+  <b>Up rate:</b>
+  <%=h @torrent.up_rate %>
+</p>
+
+<p>
+  <b>Down rate:</b>
+  <%=h @torrent.down_rate %>
+</p>
+
+<p>
+  <b>Hash:</b>
+  <%=h @torrent.hash %>
+</p>
+
+<p>
+  <b>Status:</b>
+  <%=h @torrent.status %>
+</p>
+
+
+<%= link_to 'Edit', edit_torrent_path(@torrent) %> |
+<%= link_to 'Back', torrents_path %>

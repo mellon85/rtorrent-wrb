@@ -1,0 +1,23 @@
+<p>
+  <b>Hash:</b>
+  <%=h @filelist.hash %>
+</p>
+
+<p>
+  <b>Name:</b>
+  <%=h @filelist.name %>
+</p>
+
+<p>
+  <b>Size:</b>
+  <%=h @filelist.size %>
+</p>
+
+<p>
+  <b>Downloaded:</b>
+  <%=h @filelist.downloaded %>
+</p>
+
+
+<%= link_to 'Edit', edit_filelist_path(@filelist) %> |
+<%= link_to 'Back', filelists_path %>

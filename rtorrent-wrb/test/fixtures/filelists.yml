@@ -1,0 +1,13 @@
+# Read about fixtures at http://ar.rubyonrails.org/classes/Fixtures.html
+
+one:
+  hash: MyString
+  name: MyString
+  size: 1
+  downloaded: 1
+
+two:
+  hash: MyString
+  name: MyString
+  size: 1
+  downloaded: 1

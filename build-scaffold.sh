@@ -3,8 +3,8 @@
 # License: GPLv3 or newer
 
 cd rtorrent-wrb
-ruby script/generate scaffold Torrent name:string size:int upped:int downloaded:int up_rate:int down_rate:int ID:string status:int
+ruby script/generate scaffold Torrent name:string size:integer upped:integer downloaded:integer up_rate:integer down_rate:integer hash:string status:integer
 
-ruby script/generate scaffold Filelist ID:string name:string size:int downloaded:int
+ruby script/generate scaffold Filelist hash:string name:string size:integer downloaded:integer
 
-ruby script/generate scaffold Trackers ID:string url:string
+ruby script/generate scaffold Trackers hash:string url:string

@@ -1,0 +1,28 @@
+<h1>Editing filelist</h1>
+
+<% form_for(@filelist) do |f| %>
+  <%= f.error_messages %>
+
+  <p>
+    <%= f.label :hash %><br />
+    <%= f.text_field :hash %>
+  </p>
+  <p>
+    <%= f.label :name %><br />
+    <%= f.text_field :name %>
+  </p>
+  <p>
+    <%= f.label :size %><br />
+    <%= f.text_field :size %>
+  </p>
+  <p>
+    <%= f.label :downloaded %><br />
+    <%= f.text_field :downloaded %>
+  </p>
+  <p>
+    <%= f.submit "Update" %>
+  </p>
+<% end %>
+
+<%= link_to 'Show', @filelist %> |
+<%= link_to 'Back', filelists_path %>
