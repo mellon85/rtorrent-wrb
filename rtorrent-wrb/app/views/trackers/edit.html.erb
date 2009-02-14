@@ -1,6 +1,6 @@
-<h1>Editing trackers</h1>
+<h1>Editing tracker</h1>
 
-<% form_for(@trackers) do |f| %>
+<% form_for(@tracker) do |f| %>
   <%= f.error_messages %>
 
   <p>
@@ -16,5 +16,5 @@
   </p>
 <% end %>
 
-<%= link_to 'Show', @trackers %> |
+<%= link_to 'Show', @tracker %> |
 <%= link_to 'Back', trackers_path %>

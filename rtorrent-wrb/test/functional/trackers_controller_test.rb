@@ -12,15 +12,15 @@ class TrackersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should create trackers" do
-    assert_difference('Trackers.count') do
-      post :create, :trackers => { }
+  test "should create tracker" do
+    assert_difference('Tracker.count') do
+      post :create, :tracker => { }
     end
 
-    assert_redirected_to trackers_path(assigns(:trackers))
+    assert_redirected_to tracker_path(assigns(:tracker))
   end
 
-  test "should show trackers" do
+  test "should show tracker" do
     get :show, :id => trackers(:one).id
     assert_response :success
   end
@@ -30,13 +30,13 @@ class TrackersControllerTest < ActionController::TestCase
     assert_response :success
   end
 
-  test "should update trackers" do
-    put :update, :id => trackers(:one).id, :trackers => { }
-    assert_redirected_to trackers_path(assigns(:trackers))
+  test "should update tracker" do
+    put :update, :id => trackers(:one).id, :tracker => { }
+    assert_redirected_to tracker_path(assigns(:tracker))
   end
 
-  test "should destroy trackers" do
-    assert_difference('Trackers.count', -1) do
+  test "should destroy tracker" do
+    assert_difference('Tracker.count', -1) do
       delete :destroy, :id => trackers(:one).id
     end
 

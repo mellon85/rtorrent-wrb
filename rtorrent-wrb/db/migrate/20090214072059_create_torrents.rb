@@ -16,3 +16,4 @@ class CreateTorrents < ActiveRecord::Migration
     drop_table :torrents
   end
 end
+

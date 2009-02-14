@@ -2,7 +2,7 @@ class TrackersController < ApplicationController
   # GET /trackers
   # GET /trackers.xml
   def index
-    @trackers = Trackers.find(:all)
+    @trackers = Tracker.find(:all)
 
     respond_to do |format|
       format.html # index.html.erb
@@ -13,43 +13,43 @@ class TrackersController < ApplicationController
   # GET /trackers/1
   # GET /trackers/1.xml
   def show
-    @trackers = Trackers.find(params[:id])
+    @tracker = Tracker.find(params[:id])
 
     respond_to do |format|
       format.html # show.html.erb
-      format.xml  { render :xml => @trackers }
+      format.xml  { render :xml => @tracker }
     end
   end
 
   # GET /trackers/new
   # GET /trackers/new.xml
   def new
-    @trackers = Trackers.new
+    @tracker = Tracker.new
 
     respond_to do |format|
       format.html # new.html.erb
-      format.xml  { render :xml => @trackers }
+      format.xml  { render :xml => @tracker }
     end
   end
 
   # GET /trackers/1/edit
   def edit
-    @trackers = Trackers.find(params[:id])
+    @tracker = Tracker.find(params[:id])
   end
 
   # POST /trackers
   # POST /trackers.xml
   def create
-    @trackers = Trackers.new(params[:trackers])
+    @tracker = Tracker.new(params[:tracker])
 
     respond_to do |format|
-      if @trackers.save
-        flash[:notice] = 'Trackers was successfully created.'
-        format.html { redirect_to(@trackers) }
-        format.xml  { render :xml => @trackers, :status => :created, :location => @trackers }
+      if @tracker.save
+        flash[:notice] = 'Tracker was successfully created.'
+        format.html { redirect_to(@tracker) }
+        format.xml  { render :xml => @tracker, :status => :created, :location => @tracker }
       else
         format.html { render :action => "new" }
-        format.xml  { render :xml => @trackers.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @tracker.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -57,16 +57,16 @@ class TrackersController < ApplicationController
   # PUT /trackers/1
   # PUT /trackers/1.xml
   def update
-    @trackers = Trackers.find(params[:id])
+    @tracker = Tracker.find(params[:id])
 
     respond_to do |format|
-      if @trackers.update_attributes(params[:trackers])
-        flash[:notice] = 'Trackers was successfully updated.'
-        format.html { redirect_to(@trackers) }
+      if @tracker.update_attributes(params[:tracker])
+        flash[:notice] = 'Tracker was successfully updated.'
+        format.html { redirect_to(@tracker) }
         format.xml  { head :ok }
       else
         format.html { render :action => "edit" }
-        format.xml  { render :xml => @trackers.errors, :status => :unprocessable_entity }
+        format.xml  { render :xml => @tracker.errors, :status => :unprocessable_entity }
       end
     end
   end
@@ -74,8 +74,8 @@ class TrackersController < ApplicationController
   # DELETE /trackers/1
   # DELETE /trackers/1.xml
   def destroy
-    @trackers = Trackers.find(params[:id])
-    @trackers.destroy
+    @tracker = Tracker.find(params[:id])
+    @tracker.destroy
 
     respond_to do |format|
       format.html { redirect_to(trackers_url) }

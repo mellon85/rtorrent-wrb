@@ -1,13 +1,13 @@
 <p>
   <b>Torrent hash:</b>
-  <%=h @trackers.torrent_hash %>
+  <%=h @tracker.torrent_hash %>
 </p>
 
 <p>
   <b>Url:</b>
-  <%=h @trackers.url %>
+  <%=h @tracker.url %>
 </p>
 
 
-<%= link_to 'Edit', edit_trackers_path(@trackers) %> |
+<%= link_to 'Edit', edit_tracker_path(@tracker) %> |
 <%= link_to 'Back', trackers_path %>
