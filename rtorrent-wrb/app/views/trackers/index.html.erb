@@ -10,13 +10,9 @@
   <tr>
     <td><%=h tracker.torrent_hash %></td>
     <td><%=h tracker.url %></td>
-    <td><%= link_to 'Show', tracker %></td>
-    <td><%= link_to 'Edit', edit_tracker_path(tracker) %></td>
-    <td><%= link_to 'Destroy', tracker, :confirm => 'Are you sure?', :method => :delete %></td>
   </tr>
 <% end %>
 </table>
 
 <br />
 
-<%= link_to 'New tracker', new_tracker_path %>

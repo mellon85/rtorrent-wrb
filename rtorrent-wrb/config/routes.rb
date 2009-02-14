@@ -1,9 +1,9 @@
 ActionController::Routing::Routes.draw do |map|
-  map.resources :trackers
+  #map.resources :trackers
 
   map.resources :filelists
 
-  map.resources :torrents
+  map.resources :torrents, :has_many => :trackers
 
   # The priority is based upon order of creation: first created -> highest priority.
 

@@ -29,7 +29,7 @@
 </p>
 
 <p>
-  <b>Torrent hash:</b>
+  <b>Torrent hash:</b
   <%=h @torrent.torrent_hash %>
 </p>
 
@@ -38,6 +38,8 @@
   <%=h @torrent.status %>
 </p>
 
+
+<%= h Tracker.find(:all, :conditions => "torrent_hash = '#{@torrent.torrent_hash}'") %>
 
 <%= link_to 'Edit', edit_torrent_path(@torrent) %> |
 <%= link_to 'Back', torrents_path %>
