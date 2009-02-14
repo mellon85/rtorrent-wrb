@@ -42,7 +42,7 @@ class TorrentsController < ApplicationController
   def create
     @torrent = Torrent.new(params[:torrent])
     details = params[:torrent]
-    @torrent.torrent_hash = details["torrent_hash"]
+    @torrent.id = details["torrent_hash"]
 
 
     respond_to do |format|
