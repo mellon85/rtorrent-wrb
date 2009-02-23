@@ -9,7 +9,7 @@ class Torrent < Sequel::Model
     one_to_many     :trackers
 end
 
-class FileList < Sequel::Model
+class TorrentFile < Sequel::Model
     no_primary_key
 end
 

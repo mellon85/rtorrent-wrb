@@ -16,8 +16,10 @@ class Database < Sequel::Migration
                 :auto_increment => false
         end
 
-        create_table :filelists do
+        create_table :torrent_files do
             column  :name ,:text
+            column  :size ,:integer
+            column  :downloaded, :integer
             foreign_key :torrent_id, :table => :torrents, :type => :text
         end
 
@@ -29,7 +31,7 @@ class Database < Sequel::Migration
 
     def down
         drop_table :torrents
-        drop_table :filelists
+        drop_table :torrent_files
         drop_table :trackers
     end
 end
