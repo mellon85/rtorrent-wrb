@@ -1,0 +1,10 @@
+
+task :migrate do |t|
+    require 'model/migration'
+    Database.apply(DB,:up)
+end
+
+task :reset do |t|
+    require 'model/migration'
+    Database.apply(DB,:down)
+end

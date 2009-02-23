@@ -2,7 +2,6 @@
 
 require 'rubygems'
 require 'sequel'
-require 'model/init'
 
 class Database < Sequel::Migration
     def up
@@ -27,6 +26,12 @@ class Database < Sequel::Migration
             foreign_key :torrent_id, :table => :torrents, :type => :text
         end
     end
+
+    def down
+        drop_table :torrents
+        drop_table :filelists
+        drop_table :trackers
+    end
 end
 
-Database.apply(DB,:up)
+DB = Sequel.sqlite("rtorrent-wrb.sqlite")
