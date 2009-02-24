@@ -6,9 +6,9 @@
 <?r else ?>
 
 <table border="0">
-    <tr><th>Torrent hash</th></tr>
+    <tr><th>Name</th><th>hash</th></tr>
 <?r @torrents.each do |x| ?>
-    <tr><th>#{x[:torrent_id]}</th></tr>
+<tr><th>#{x[:name]}</th><th>#{x[:torrent_id]}</th></tr>
 <?r end ?>
 </table>
 <?r end ?>
