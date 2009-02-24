@@ -1,3 +1,6 @@
-<p>Reading from the template.</p>
-
-<h1>#{@torrents}</h1>
+<?r @torrents.each do |x| ?>
+<table border="0">
+    <tr><th>Torrent name</th></tr>
+    <tr><th>#{x.torrent_id}</th></tr>
+</table>
+<?r end ?>
