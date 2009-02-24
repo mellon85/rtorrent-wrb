@@ -1,6 +1,15 @@
-<?r @torrents.each do |x| ?>
+<h1>Torrent List</h1>
+
+<div id="torrents">
+<?r if @torrents.empty? then ?>
+<h3>No torrents</h3>
+<?r else ?>
+
 <table border="0">
-    <tr><th>Torrent name</th></tr>
-    <tr><th>#{x.torrent_id}</th></tr>
+    <tr><th>Torrent hash</th></tr>
+<?r @torrents.each do |x| ?>
+    <tr><th>#{x[:torrent_id]}</th></tr>
+<?r end ?>
 </table>
 <?r end ?>
+</div>

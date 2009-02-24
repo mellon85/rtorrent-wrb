@@ -36,4 +36,4 @@ class Database < Sequel::Migration
     end
 end
 
-DB = Sequel.sqlite("rtorrent-wrb.sqlite")
+Database.apply(DB,:up)

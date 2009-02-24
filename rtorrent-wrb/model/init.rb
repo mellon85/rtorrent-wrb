@@ -6,15 +6,16 @@
 require 'rubygems'
 require 'sequel'
 
-DB = Sequel.sqlite("rtorrent-wrb.sqlite")
+DB = Sequel.sqlite
 
 require 'model/models'
+require 'model/migration'
 
+Torrents = DB[:torrents]
+Torrents << {:torrent_id=>"hash1"}
+Torrents << {:torrent_id=>"hash2"}
+to = Torrent["hash1"]
 
-#Torrents = DB[:torrents]
-#Torrents << {:torrent_id=>"hash1"}
-#to = Torrent["hash1"]
-#
 #ta = Tracker.new
 #ta.url="url"
 #to.add_tracker(ta)

@@ -1,6 +1,7 @@
 class TorrentController < Controller
+  
   def index
-    @title = "rtorrent: torrents"
+    @title = "rTorrent: Torrents"
     @torrents = Torrent.all
   end
 
