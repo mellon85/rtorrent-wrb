@@ -5,9 +5,11 @@ require 'sequel'
 
 DB = Sequel.sqlite
 
-require 'model/models'
 require 'model/migration'
+require 'model/models'
 
+
+#{{{ Test Data
 torrents = DB[:torrents]
 torrents << {:torrent_id=>"964D6922206AEE2D2BFB49D8B7CD4C0336EBA311",
              :name => "[Xvid - ITA- Sub Ita - AC3] Gattaca.avi",
@@ -18,8 +20,19 @@ torrents << {:torrent_id=>"AEB3239BC8FB27080FFB9C8696CFB236B9159991",
              :size => 1400*1024, :upped => 311*1024, :up => 3,
              :down => 0, :stat => 2}
 
-#ta = Tracker.new
-#ta.url="url"
-#to.add_tracker(ta)
-#ta = Tracker.create(:url => "pirate bay")
-#to.add_tracker(ta)
+torrent = Torrent["964D6922206AEE2D2BFB49D8B7CD4C0336EBA311"]
+ta = Tracker.new
+ta.url="http://tracker.tntvillage.scambioetico.org:2710/announce"
+torrent.add_tracker(ta)
+ta = Tracker.new
+ta.url="udp://tracker.tntvillage.scambioetico.org:2710/announce"
+torrent.add_tracker(ta)
+
+torrent = Torrent["AEB3239BC8FB27080FFB9C8696CFB236B9159991"]
+ta = Tracker.new
+ta.url="http://tracker.thepiratebay.org/announce"
+torrent.add_tracker(ta)
+ta = Tracker.new
+ta.url="http://www.todotorrents.com:2710/announce"
+torrent.add_tracker(ta)
+#}}}
