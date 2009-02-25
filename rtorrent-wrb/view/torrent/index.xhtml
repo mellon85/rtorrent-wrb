@@ -9,7 +9,7 @@
     <tr><th>Name</th><th>hash</th></tr>
 <?r @torrents.each do |x| ?>
 <tr><th>#{x[:name]}</th><th>
-        <a href="show/#{x[:torrent_id]}">#{x[:torrent_id]}</a></th></tr>
+        <a href="torrent/show/#{x[:torrent_id]}">#{x[:torrent_id]}</a></th></tr>
 <?r end ?>
 </table>
 <?r end ?>
