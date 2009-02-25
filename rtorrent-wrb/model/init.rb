@@ -17,7 +17,6 @@ torrents << {:torrent_id=>"AEB3239BC8FB27080FFB9C8696CFB236B9159991",
              :name => "Starship.Troopers.3.Marauder.(2008)DVDRip.XviD",
              :size => 1400*1024, :upped => 311*1024, :up => 3,
              :down => 0, :stat => 2}
-to = Torrent["hash1"]
 
 #ta = Tracker.new
 #ta.url="url"
