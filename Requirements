@@ -3,3 +3,7 @@ To use this software you need at least there gems
 Ramaze (tested on 2009.02)
 Sequel (tested on 2.10.0)
 sqlite3-ruby (tested on 1.2.4)
+sbfaulkner-sequel_cascading (tested 1.0.3)
+
+cascading gem can be found here
+http://github.com/sbfaulkner/sequel_cascading/tree/master

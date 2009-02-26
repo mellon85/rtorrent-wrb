@@ -7,6 +7,9 @@ class Torrent < Sequel::Model
     set_primary_key :torrent_id
     one_to_many     :torrentfiles
     one_to_many     :trackers
+
+    is :cascading, :destroy => :torrentfiles
+    is :cascading, :destroy => :trackers
 end
 
 class Torrentfile < Sequel::Model
