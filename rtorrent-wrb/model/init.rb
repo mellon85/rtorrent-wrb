@@ -29,7 +29,12 @@ torrent.add_tracker(ta)
 ta = Tracker.new
 ta.url="udp://tracker.tntvillage.scambioetico.org:2710/announce"
 torrent.add_tracker(ta)
-
+tf = Torrentfile.new
+tf.name="Porno"
+tf.size="200"
+tf.downloaded="20"
+torrent.add_torrentfile(tf)
+ 
 torrent = Torrent["AEB3239BC8FB27080FFB9C8696CFB236B9159991"]
 ta = Tracker.new
 ta.url="http://tracker.thepiratebay.org/announce"

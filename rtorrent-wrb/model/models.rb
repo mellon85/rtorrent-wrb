@@ -5,11 +5,11 @@ require 'sequel'
 
 class Torrent < Sequel::Model
     set_primary_key :torrent_id
-    one_to_many     :filelists
+    one_to_many     :torrentfiles
     one_to_many     :trackers
 end
 
-class TorrentFile < Sequel::Model
+class Torrentfile < Sequel::Model
     no_primary_key
 end
 

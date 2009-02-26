@@ -17,7 +17,7 @@ class Database < Sequel::Migration
                         :auto_increment => false
         end
 
-        create_table :torrent_files do
+        create_table :torrentfiles do
             column  :name ,:text
             column  :size ,:integer
             column  :downloaded, :integer
