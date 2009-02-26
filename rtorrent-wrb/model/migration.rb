@@ -8,7 +8,8 @@ class Database < Sequel::Migration
         create_table :torrents do
             column  :name ,:text
             column  :size ,:integer
-            column  :upped,:integer
+            column  :downloaded,:integer
+            column  :uploaded,:integer
             column  :up   ,:integer
             column  :down ,:integer
             column  :stat ,:integer
