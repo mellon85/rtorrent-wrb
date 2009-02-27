@@ -41,9 +41,9 @@ class Controller < Ramaze::Controller
             torrent.torrent_id = "#{x}"
             torrent.name = "#{name}"
             torrent.size = size/1024 
-            torrent.uploaded = uploaded
-            torrent.up = up
-            torrent.downloaded = downloaded
+            torrent.uploaded = uploaded/1024
+            torrent.up = up/1024
+            torrent.downloaded = downloaded/1024
             torrent.down = 0 
             torrent.stat = 0
             torrent.updated = 1
@@ -69,9 +69,9 @@ class Controller < Ramaze::Controller
           else
             torrent.update(
                 :name => name, :size => size/1024,
-                :downloaded => downloaded,
-                :uploaded => uploaded,
-                :up => up, :down => down,
+                :downloaded => downloaded/1024,
+                :uploaded => uploaded/1024,
+                :up => up/1024, :down => down/1024,
                 :stat => stat, :updated => 1)
             (0..fnum-1).each do |i|
                name, size, chdone =
