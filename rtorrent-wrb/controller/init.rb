@@ -19,7 +19,7 @@ class Controller < Ramaze::Controller
       torrents = DB[:torrents]
       trackers = DB[:trackers]
       torrentfiles = DB[:torrentfiles]
-      torrents.each.update(:updated => '0')
+      Torrent.update(:updated => 0)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       tlist = sock.call("download_list", "started")
       tlist.each { |x|
@@ -32,7 +32,7 @@ class Controller < Ramaze::Controller
         chsize, chnum = sock.multicall(["d.get_chunk_size","#{x}"],["d.get_completed_chunks","#{x}"])
         uploaded = chsize*chnum
       end
-      if torrents[:torrent_id => '"#{x}"'] == nil then
+      if Torrent[x] == nil then
         torrents << {:torrent_id=>"#{x}",
                      :name => "#{name}",
                      :size => size, :uploaded => uploaded, :up => up,
@@ -46,7 +46,7 @@ class Controller < Ramaze::Controller
            torrent.add_tracker(tracker)
         }
         (0..fnum-1).each { |i|
-           f = Torrentfile.new
+           f = TorrentFile.new
            name, size, chdone = sock.multicall(["f.get_path","#{x}",i],["f.get_size_chunks","#{x}",i],["f.get_completed_chunks","#{x}",i])
            f.name = name
            f.size = size
@@ -55,18 +55,18 @@ class Controller < Ramaze::Controller
         }
 
       else
-        torrents[:torrent_id => '"#{x}"'].update(:name => "#{name}",
-                                                :size => size,
-                                                :downloaded => downloaded,
-                                                :uploaded => uploaded,
-                                                :up => up,
-                                                :down => down,
-                                                :stat => stat,
-                                                :updated => 1)
+        Torrent[x].update(:name => "#{name}",
+                    :size => size,
+                    :downloaded => downloaded,
+                    :uploaded => uploaded,
+                    :up => up,
+                    :down => down,
+                    :stat => stat,
+                    :updated => 1)
         (0..fnum-1).each { |i|
-           name, size, chdone = sock.multicall(["f.get_path","#{x}",i],["f.get_size_chunks","#{x}",i],["f.get_completed_chunks","#{x}",i])
-           torrentfiles.filter(:torrent_id => x, :name => name).update(:size => size,
-                                                                       :downloaded => chdone*chsize)
+           name, chsize, chdone = sock.multicall(["f.get_path","#{x}",i],["f.get_size_chunks","#{x}",i],["f.get_completed_chunks","#{x}",i])
+           torrentfiles.filter(:torrent_id => x, :name => name).update(
+                :size => size,:downloaded => chdone*chsize)
         }
         
       end
