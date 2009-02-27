@@ -22,6 +22,7 @@ class Database < Sequel::Migration
             column  :name ,:text
             column  :size ,:integer
             column  :downloaded, :integer
+            column  :priority, :integer
             foreign_key :torrent_id, :table => :torrents, :type => :text
         end
 

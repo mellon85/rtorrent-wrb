@@ -56,10 +56,11 @@ class Controller < Ramaze::Controller
             end
             (0..fnum-1).each do |i|
                f = Torrentfile.new
-               name, size, chdone =
+               name, size, chdone, priority =
                    sock.multicall(["f.get_path",x,i],
                                   [ "f.get_size_chunks",x,i],
-                                  ["f.get_completed_chunks",x,i])
+                                  ["f.get_completed_chunks",x,i],
+                                  ["f.get_priority",x,i])
                f.name = name
                f.size = size
                f.downloaded = chdone*chsize
@@ -74,12 +75,13 @@ class Controller < Ramaze::Controller
                 :up => up/1024, :down => down/1024,
                 :stat => stat, :updated => 1)
             (0..fnum-1).each do |i|
-               name, size, chdone =
+               name, size, chdone, priority =
                    sock.multicall(["f.get_path",x,i],
                                   ["f.get_size_chunks",x,i],
-                                  ["f.get_completed_chunks",x,i])
+                                  ["f.get_completed_chunks",x,i],
+                                  ["f.get_priority",x,i])
                Torrentfile.filter(:torrent_id => x).update(
-                   :size => size*chsize/1024,:downloaded => chdone*chsize/1024)
+                   :size => size*chsize/1024,:downloaded => chdone*chsize/1024, :priority => priority)
             end
           end
       end
