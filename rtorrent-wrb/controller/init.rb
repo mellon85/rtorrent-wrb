@@ -16,6 +16,7 @@ class Controller < Ramaze::Controller
   def check_update
     if true then #($last_update + (60*5)) < Time.now then
       # update data to DB
+      DB.transaction do
       Torrent.update(:updated => '0')
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       tlist = sock.call("download_list", "started")
@@ -87,6 +88,7 @@ class Controller < Ramaze::Controller
       end
       Torrent.filter('updated = ?', '0').delete
       $last_update = Time.now
+      end
     end
   end
 end
