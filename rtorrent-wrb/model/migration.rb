@@ -13,6 +13,7 @@ class Database < Sequel::Migration
             column  :up   ,:integer
             column  :down ,:integer
             column  :stat ,:integer
+            column  :updated, :integer
             primary_key :torrent_id, :type => :text,
                         :auto_increment => false
         end
@@ -32,7 +33,7 @@ class Database < Sequel::Migration
 
     def down
         drop_table :torrents
-        drop_table :torrent_files
+        drop_table :torrentfiles
         drop_table :trackers
     end
 end

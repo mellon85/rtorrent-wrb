@@ -8,7 +8,7 @@ DB = Sequel.sqlite
 require 'model/migration'
 require 'model/models'
 
-
+=begin
 #{{{ Test Data
 torrents = DB[:torrents]
 torrents << {:torrent_id=>"964D6922206AEE2D2BFB49D8B7CD4C0336EBA311",
@@ -43,3 +43,4 @@ ta = Tracker.new
 ta.url="http://www.todotorrents.com:2710/announce"
 torrent.add_tracker(ta)
 #}}}
+=end
