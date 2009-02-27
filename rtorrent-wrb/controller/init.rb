@@ -57,14 +57,18 @@ class Controller < Ramaze::Controller
             end
             (0..fnum-1).each do |i|
                f = Torrentfile.new
-               name, size, chdone, priority =
+               name, size, chsize, chdone, priority =
                    sock.multicall(["f.get_path",x,i],
-                                  [ "f.get_size_chunks",x,i],
+                                  ["f.get_size_bytes",x,i],
+                                  ["f.get_size_chunks",x,i],
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
                f.name = name
-               f.size = size
-               f.downloaded = chdone*chsize
+               f.size = size/1024
+      # 'f.get_range_first' may identify how chunk are for the file?
+      # 'f.get_range_second' if size < 0
+               f.downloaded = f.size
+               f.downloaded = chdone*chsize*4 if chdone*chsize < f.size 
                torrent.add_torrentfile(f)
             end
 
