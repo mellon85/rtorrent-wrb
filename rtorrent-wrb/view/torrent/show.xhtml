@@ -1,8 +1,11 @@
 <h3>#{@title}</h3>
+
+<!-- torrents -->
 <?r if @current_torrent != nil then ?>
 <div id="torrent">
     Torrent hash: #{@current_torrent[:torrent_id]}
 </div>
+<div id="files">
 <b>Files:</b><br>
 <table border="0">
   <tr><th>File Name</th><th>Size</th><th>Downloaded</th></tr>
@@ -11,10 +14,15 @@
   <?r end ?>
   <tr><th>
 </table>
-<b>Trackers:</b><br>
+</div>
+<div id="trackers">
+<p><b>Trackers:</b><br>
 <?r @current_torrent.trackers.each do |x| ?>
 #{x[:url]}<br>
 <?r end ?>
+</p></div>
+
+<!-- Error -->
 <?r else ?>
 <div id="error">
     Error
