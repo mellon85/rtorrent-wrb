@@ -17,7 +17,9 @@
 <div id="trackers">
 <p><b>Trackers:</b><br>
 <?r @current_torrent.trackers.each do |x| ?>
-#{x[:url]}<br>
+<?r if !(x.url =~ /dht\:/) then ?>
+    #{x.url}<br>
+    <?r end ?>
 <?r end ?>
 </p></div>
 
