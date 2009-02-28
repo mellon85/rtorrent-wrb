@@ -109,10 +109,11 @@ end
 # load program configuration
 $conf = YAML.load_file("rtorrent-wrb.conf")
 
-# save coniguration file
-# f = File.open("rtorrent-wrb.conf")
-# f.write(YAML.dump($conf))
-# f.close
+def save_conf()
+    f = File.open("rtorrent-wrb.conf")
+    f.write(YAML.dump($conf))
+    f.close
+end
 
 # Here go your requires for subclasses of Controller:
 require 'controller/main'
