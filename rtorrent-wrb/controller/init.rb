@@ -21,17 +21,15 @@ class Controller < Ramaze::Controller
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       tlist = sock.call("download_list", "started")
       tlist.each do |x|
-          name, size, uploaded, downloaded, up, down, stat, fnum, tracknum, chsize =
+          name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
+              chsize, chnum =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
                            ["d.get_up_total",x],["d.get_completed_bytes",x],
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
-                           ["d.get_chunk_size",x])
-          if size < 0 then
-            chnum = sock.call("d.get_size_chunks",x)
-            size = chsize*chnum
-          end
+                           ["d.get_chunk_size",x],["get_size_chunks",x])
+          size = chsize*chnum if size < 0
           if uploaded < 0 then
             chnum = sock.call("d.get_completed_chunks",x)
             uploaded = chsize*chnum
@@ -76,7 +74,6 @@ class Controller < Ramaze::Controller
                f.downloaded = chdone*chsize if chdone*chsize < f.size 
                torrent.add_torrentfile(f)
             end
-
           else
             # Update torrent
             torrent.update(
@@ -91,7 +88,7 @@ class Controller < Ramaze::Controller
                                   ["f.get_size_chunks",x,i],
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
-               Torrentfile.filter(:torrent_id => x).update(
+               Torrentfile.filter(:torrent_id => x).filter(:name => name).update(
                    :size => size*chsize,:downloaded => chdone*chsize, :priority => priority)
             end
           end
