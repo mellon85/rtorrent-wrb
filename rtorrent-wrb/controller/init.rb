@@ -24,15 +24,17 @@ class Controller < Ramaze::Controller
           name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
               chsize, chnum =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
+# d.get_up_total and d.get_down_total return bytes upped and downloaded in this
+# session!
                            ["d.get_up_total",x],["d.get_completed_bytes",x],
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
                            ["d.get_chunk_size",x],["d.get_size_chunks",x])
           size = chsize*chnum if size < 0
-          if uploaded < 0 then
+          if downloaded < 0 then
             chnum = sock.call("d.get_completed_chunks",x)
-            uploaded = chsize*chnum
+            downloaded = chsize*chnum
           end
           torrent = Torrent[x]
           if torrent == nil then
@@ -71,7 +73,8 @@ class Controller < Ramaze::Controller
       # 'f.get_range_first' may identify how chunk are for the file?
       # 'f.get_range_second' if size < 0
                f.downloaded = f.size
-               f.downloaded = chdone*chsize if chdone*chsize < f.size 
+               f.downloaded = chdone*chsize if chdone*chsize > f.size 
+               #f.downloaded = chdone*chsize
                torrent.add_torrentfile(f)
             end
           else
@@ -83,13 +86,16 @@ class Controller < Ramaze::Controller
                 :up => up, :down => down,
                 :stat => stat, :updated => 1)
             (0..fnum-1).each do |i|
-               name, size, chdone, priority =
+               name, chnum, chdone, priority, size =
                    sock.multicall(["f.get_path",x,i],
                                   ["f.get_size_chunks",x,i],
                                   ["f.get_completed_chunks",x,i],
-                                  ["f.get_priority",x,i])
+                                  ["f.get_priority",x,i],
+                                  ["f.get_size_bytes",x,i])
+                   done = chsize*chdone
+                   done = size if done > size
                Torrentfile.filter(:torrent_id => x).filter(:name => name).update(
-                   :downloaded => chdone*chsize, :priority => priority)
+                   :downloaded => done, :priority => priority)
             end
           end
       end
