@@ -38,23 +38,28 @@ class Controller < Ramaze::Controller
           end
           torrent = Torrent[x]
           if torrent == nil then
+            # Create new Torrent
             torrent = Torrent.new
             torrent.torrent_id = "#{x}"
             torrent.name = "#{name}"
-            torrent.size = size/1024 
-            torrent.uploaded = uploaded/1024
-            torrent.up = up/1024
-            torrent.downloaded = downloaded/1024
+            torrent.size = size 
+            torrent.uploaded = uploaded
+            torrent.up = up
+            torrent.downloaded = downloaded
             torrent.down = 0 
             torrent.stat = 0
             torrent.updated = 1
             Torrent.insert(torrent)
+
+            # Add trackers
             (0..tracknum-1).each do |i|
                tracker = Tracker.new
                tracker.url = sock.call("t.get_url","#{x}",i)
                torrent = Torrent[x]
                torrent.add_tracker(tracker)
             end
+            
+            # Add files
             (0..fnum-1).each do |i|
                f = Torrentfile.new
                name, size, chsize, chdone, priority =
@@ -64,20 +69,21 @@ class Controller < Ramaze::Controller
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
                f.name = name
-               f.size = size/1024
+               f.size = size
       # 'f.get_range_first' may identify how chunk are for the file?
       # 'f.get_range_second' if size < 0
                f.downloaded = f.size
-               f.downloaded = chdone*chsize*4 if chdone*chsize < f.size 
+               f.downloaded = chdone*chsize if chdone*chsize < f.size 
                torrent.add_torrentfile(f)
             end
 
           else
+            # Update torrent
             torrent.update(
-                :name => name, :size => size/1024,
-                :downloaded => downloaded/1024,
-                :uploaded => uploaded/1024,
-                :up => up/1024, :down => down/1024,
+                :name => name, :size => size,
+                :downloaded => downloaded,
+                :uploaded => uploaded,
+                :up => up, :down => down,
                 :stat => stat, :updated => 1)
             (0..fnum-1).each do |i|
                name, size, chdone, priority =
@@ -86,7 +92,7 @@ class Controller < Ramaze::Controller
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
                Torrentfile.filter(:torrent_id => x).update(
-                   :size => size*chsize/1024,:downloaded => chdone*chsize/1024, :priority => priority)
+                   :size => size*chsize,:downloaded => chdone*chsize, :priority => priority)
             end
           end
       end

@@ -12,11 +12,11 @@
 
 <?r @torrents.each do |x| ?>
 <tr><th align="left"><a href="torrent/show/#{x[:torrent_id]}">#{x[:name]}</a></th>
-    <th>#{x[:size]}</th>
-    <th>#{x[:downloaded]}</th>
-    <th>#{x[:uploaded]}</th>
-    <th>#{x[:down]}</th>
-    <th>#{x[:up]}</th> </tr>
+    <th>#{convert_bytes(x.size)}</th>
+    <th>#{convert_bytes(x.downloaded)}</th>
+    <th>#{convert_bytes(x.uploaded)}</th>
+    <th>#{convert_bytes(x.down)}</th>
+    <th>#{convert_bytes(x.up)}</th> </tr>
 <?r end ?>
 </table>
 <?r end ?>
