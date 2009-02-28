@@ -28,7 +28,7 @@ class Controller < Ramaze::Controller
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
-                           ["d.get_chunk_size",x],["get_size_chunks",x])
+                           ["d.get_chunk_size",x],["d.get_size_chunks",x])
           size = chsize*chnum if size < 0
           if uploaded < 0 then
             chnum = sock.call("d.get_completed_chunks",x)
@@ -89,7 +89,7 @@ class Controller < Ramaze::Controller
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
                Torrentfile.filter(:torrent_id => x).filter(:name => name).update(
-                   :size => size*chsize,:downloaded => chdone*chsize, :priority => priority)
+                   :downloaded => chdone*chsize, :priority => priority)
             end
           end
       end
