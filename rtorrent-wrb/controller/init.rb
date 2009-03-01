@@ -13,6 +13,7 @@ class Controller < Ramaze::Controller
   helper :xhtml
   engine :Ezamar
 
+  protected
   def check_update
     if true then #($last_update + (60*$conf[:update_time])) < Time.now then
       # update data to DB
@@ -82,7 +83,7 @@ class Controller < Ramaze::Controller
             torrent.update(
                 :name => name, :size => size,
                 :downloaded => downloaded,
-                :uploaded => uploaded,
+                :uploaded => downloaded*ratio/1000.0,
                 :up => up, :down => down,
                 :stat => stat, :updated => 1,
                 :ratio => ratio)
