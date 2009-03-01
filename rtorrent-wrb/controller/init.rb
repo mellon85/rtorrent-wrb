@@ -33,7 +33,7 @@ class Controller < Ramaze::Controller
                            ["d.get_chunk_size",x],["d.get_size_chunks",x],
                            ["d.get_completed_chunks",x])
           size = chsize*chnum if size < chsize*chnum
-          downloaded = chsize*chnum if downloaded < chsize*chcmp
+          downloaded = chsize*chcmp if downloaded < chsize*chcmp
           torrent = Torrent[x]
           if torrent == nil then
             # Create new Torrent
