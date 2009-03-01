@@ -22,7 +22,7 @@ class Controller < Ramaze::Controller
       tlist = sock.call("download_list", "main")
       tlist.each do |x|
           name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
-              chsize, chnum, chcmp =
+              chsize, chnum, chcmp, ratio =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
 # d.get_up_total and d.get_down_total return bytes upped and downloaded in this
 # session!
@@ -31,7 +31,7 @@ class Controller < Ramaze::Controller
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
                            ["d.get_chunk_size",x],["d.get_size_chunks",x],
-                           ["d.get_completed_chunks",x])
+                           ["d.get_completed_chunks",x],["d.get_ratio",x])
           size = chsize*chnum if size < chsize*chnum
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
           torrent = Torrent[x]
@@ -47,6 +47,7 @@ class Controller < Ramaze::Controller
             torrent.down = 0 
             torrent.stat = 0
             torrent.updated = 1
+            torrent.ratio = ratio
             Torrent.insert(torrent)
 
             # Add trackers
@@ -83,7 +84,8 @@ class Controller < Ramaze::Controller
                 :downloaded => downloaded,
                 :uploaded => uploaded,
                 :up => up, :down => down,
-                :stat => stat, :updated => 1)
+                :stat => stat, :updated => 1,
+                :ratio => ratio)
             (0..fnum-1).each do |i|
                name, chnum, chdone, priority, size =
                    sock.multicall(["f.get_path",x,i],

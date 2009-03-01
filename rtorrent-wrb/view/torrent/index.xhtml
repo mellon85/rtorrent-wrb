@@ -7,7 +7,7 @@
 
 <table border="0">
     <tr><th>Name</th><th>Size</th><th>Downloaded</th><th>Uploaded</th>
-        <th>Download</th><th>Upload</th>
+      <th>Download</th><th>Upload</th><th>Ratio</th>
         </tr>
 
 <?r @torrents.each do |x| ?>
@@ -16,7 +16,8 @@
     <th>#{convert_bytes(x.downloaded)}</th>
     <th>#{convert_bytes(x.uploaded)}</th>
     <th>#{convert_bytes(x.down)}</th>
-    <th>#{convert_bytes(x.up)}</th> </tr>
+    <th>#{convert_bytes(x.up)}</th>
+    <th>#{print_ratio(x.ratio)}</th> </tr>
 <?r end ?>
 </table>
 <?r end ?>

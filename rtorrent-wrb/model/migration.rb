@@ -14,6 +14,7 @@ class Database < Sequel::Migration
             column  :down ,:integer
             column  :stat ,:integer
             column  :updated, :integer
+            column  :ratio, :integer
             primary_key :torrent_id, :type => :text,
                         :auto_increment => false
         end

@@ -34,4 +34,8 @@ class TorrentController < Controller
       end
       return "#{bytes} B" 
   end
+
+  def print_ratio(ratio)
+      return sprintf('%.02f', ratio/1000.to_f)
+  end
 end
