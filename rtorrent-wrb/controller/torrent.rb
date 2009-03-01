@@ -19,16 +19,17 @@ class TorrentController < Controller
   private
   
   def convert_bytes(bytes)
-      if bytes < 1024 then
+      s = 1024.0
+      if bytes < s then
           "#{bytes} B"
-      elsif bytes >= 1024*1024*1024*1024 then
-          "#{bytes/1024/1024/1024/1024} TB"
-      elsif bytes >= 1024*1024*1024 then
-          "#{bytes/1024/1024/1024} GB"
-      elsif bytes >= 1024*1024 then
-          "#{bytes/1024/1024} MB"
-      elsif bytes >= 1024 then
-          "#{bytes/1024} KB"
+      elsif bytes >= s*s*s*s then
+          "#{sprintf('%.02f',bytes/s/s/s/s)} TB"
+      elsif bytes >= s*s*s then
+          "#{sprintf('%.02f',bytes/s/s/s)} GB"
+      elsif bytes >= s*s then
+          "#{sprintf('%.02f',bytes/s/s)} MB"
+      elsif bytes >= s then
+          "#{sprintf('%.02f',bytes/s)} KB"
       end
   end
 end
