@@ -14,7 +14,7 @@ class Controller < Ramaze::Controller
   engine :Ezamar
 
   def check_update
-    if true then #($last_update + (60*5)) < Time.now then
+    if true then #($last_update + (60*$conf[:update_time])) < Time.now then
       # update data to DB
       DB.transaction do
       Torrent.update(:updated => '0')
@@ -22,7 +22,7 @@ class Controller < Ramaze::Controller
       tlist = sock.call("download_list", "main")
       tlist.each do |x|
           name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
-              chsize, chnum =
+              chsize, chnum, chcmp =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
 # d.get_up_total and d.get_down_total return bytes upped and downloaded in this
 # session!
@@ -30,12 +30,10 @@ class Controller < Ramaze::Controller
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
-                           ["d.get_chunk_size",x],["d.get_size_chunks",x])
-          size = chsize*chnum if size < 0
-          if downloaded < 0 then
-            chnum = sock.call("d.get_completed_chunks",x)
-            downloaded = chsize*chnum
-          end
+                           ["d.get_chunk_size",x],["d.get_size_chunks",x],
+                           ["d.get_completed_chunks",x])
+          size = chsize*chnum if size < chsize*chnum
+          downloaded = chsize*chnum if downloaded < chsize*chcmp
           torrent = Torrent[x]
           if torrent == nil then
             # Create new Torrent
@@ -68,6 +66,7 @@ class Controller < Ramaze::Controller
                                   ["f.get_size_chunks",x,i],
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
+
                f.name = name
                f.size = size
       # 'f.get_range_first' may identify how chunk are for the file?
