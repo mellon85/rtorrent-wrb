@@ -41,7 +41,7 @@ class Controller < Ramaze::Controller
             torrent.torrent_id = "#{x}"
             torrent.name = "#{name}"
             torrent.size = size 
-            torrent.uploaded = uploaded
+            torrent.uploaded = downloaded*ratio/1000.0
             torrent.up = up
             torrent.downloaded = downloaded
             torrent.down = 0 
