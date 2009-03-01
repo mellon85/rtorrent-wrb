@@ -22,12 +22,12 @@ class Controller < Ramaze::Controller
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       tlist = sock.call("download_list", "main")
       tlist.each do |x|
-          name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
+          name, size, downloaded, up, down, stat, fnum, tracknum,
               chsize, chnum, chcmp, ratio =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
 # d.get_up_total and d.get_down_total return bytes upped and downloaded in this
 # session!
-                           ["d.get_up_total",x],["d.get_completed_bytes",x],
+                           ["d.get_completed_bytes",x],
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
@@ -35,6 +35,8 @@ class Controller < Ramaze::Controller
                            ["d.get_completed_chunks",x],["d.get_ratio",x])
           size = chsize*chnum if size < chsize*chnum
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
+          uploaded = downloaded*ratio/1000.0
+
           torrent = Torrent[x]
           if torrent == nil then
             # Create new Torrent
@@ -42,10 +44,10 @@ class Controller < Ramaze::Controller
             torrent.torrent_id = "#{x}"
             torrent.name = "#{name}"
             torrent.size = size 
-            torrent.uploaded = downloaded*ratio/1000.0
+            torrent.uploaded = uploaded
             torrent.up = up
             torrent.downloaded = downloaded
-            torrent.down = 0 
+            torrent.down = down
             torrent.stat = 0
             torrent.updated = 1
             torrent.ratio = ratio
@@ -62,17 +64,12 @@ class Controller < Ramaze::Controller
             # Add files
             (0..fnum-1).each do |i|
                f = Torrentfile.new
-               name, size, chsize, chdone, priority =
+               f.name, f.size, chsize, chdone, priority =
                    sock.multicall(["f.get_path",x,i],
                                   ["f.get_size_bytes",x,i],
                                   ["f.get_size_chunks",x,i],
                                   ["f.get_completed_chunks",x,i],
                                   ["f.get_priority",x,i])
-
-               f.name = name
-               f.size = size
-      # 'f.get_range_first' may identify how chunk are for the file?
-      # 'f.get_range_second' if size < 0
                f.downloaded = f.size
                f.downloaded = chdone*chsize if chdone*chsize > f.size 
                #f.downloaded = chdone*chsize
@@ -83,7 +80,7 @@ class Controller < Ramaze::Controller
             torrent.update(
                 :name => name, :size => size,
                 :downloaded => downloaded,
-                :uploaded => downloaded*ratio/1000.0,
+                :uploaded => uploaded,
                 :up => up, :down => down,
                 :stat => stat, :updated => 1,
                 :ratio => ratio)
