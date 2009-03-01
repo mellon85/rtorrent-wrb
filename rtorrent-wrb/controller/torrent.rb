@@ -20,16 +20,18 @@ class TorrentController < Controller
   
   def convert_bytes(bytes)
       s = 1024.0
-      if bytes < s then
-          "#{bytes} B"
-      elsif bytes >= s*s*s*s then
-          "#{sprintf('%.02f',bytes/s/s/s/s)} TB"
-      elsif bytes >= s*s*s then
-          "#{sprintf('%.02f',bytes/s/s/s)} GB"
-      elsif bytes >= s*s then
-          "#{sprintf('%.02f',bytes/s/s)} MB"
-      elsif bytes >= s then
-          "#{sprintf('%.02f',bytes/s)} KB"
+
+      [[s*s*s*s,'TB'],[s*s*s,'GB'],[s*s,'MB'],[s,'KB']].each do |x,t|
+          if bytes >= x then
+            c = bytes / x
+            if ((c % 1) * 100) >= 1 then
+                c = sprintf('%.02f',c) 
+            else
+                c = c.round
+            end
+            return "#{c} #{t}"
+          end
       end
+      return "#{bytes} B" 
   end
 end
