@@ -19,7 +19,7 @@ class Controller < Ramaze::Controller
       DB.transaction do
       Torrent.update(:updated => '0')
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      tlist = sock.call("download_list", "started")
+      tlist = sock.call("download_list", "main")
       tlist.each do |x|
           name, size, uploaded, downloaded, up, down, stat, fnum, tracknum,
               chsize, chnum =
