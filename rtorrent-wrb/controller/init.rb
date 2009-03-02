@@ -28,7 +28,7 @@ class Controller < Ramaze::Controller
                                          ["f.get_completed_chunks",id,i],
                                          ["f.get_priority",id,i])
                 f.downloaded = f.size
-                f.downloaded = chdone*chsize if chdone*chsize > f.size 
+                f.downloaded = chdone*chsize if chdone*chsize < f.size 
                 torrent.add_torrentfile(f)
             end
         else
@@ -39,7 +39,7 @@ class Controller < Ramaze::Controller
                                    ["f.get_completed_chunks",id,i],
                                    ["f.get_priority",id,i])
                 done = size
-                done = chdone*chsize if chdone*chsize > size
+                done = chdone*chsize if chdone*chsize < size
                 Torrentfile.filter(:torrent_id => id).filter(:name => name).update(
                     :downloaded => done, :priority => priority)
             end
