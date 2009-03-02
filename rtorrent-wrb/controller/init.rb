@@ -1,7 +1,6 @@
 # Define a subclass of Ramaze::Controller holding your defaults for all
 # controllers
 
-$last_update = Time.at(0)
 $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :username        => "",
          :passwordSHA1    => "",
@@ -14,9 +13,62 @@ class Controller < Ramaze::Controller
   engine :Ezamar
 
   protected
-  def check_update
-    if true then #($last_update + (60*$conf[:update_time])) < Time.now then
-      # update data to DB
+
+  def update_files(id)
+    sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+    DB.transaction do
+        torrent = Torrent[id] 
+        fnum    = sock.call("d.get_size_files",id)
+        if torrent.torrentfiles.length == 0 then
+            (0..fnum-1).each do |i|
+                f = Torrentfile.new
+                f.name, f.size, chsize, chdone, f.priority = 
+                    sock.multicall(["f.get_path",id,i],["f.get_size_bytes",id,i],
+                                         ["f.get_size_chunks",id,i],
+                                         ["f.get_completed_chunks",id,i],
+                                         ["f.get_priority",id,i])
+                f.downloaded = f.size
+                f.downloaded = chdone*chsize if chdone*chsize > f.size 
+                torrent.add_torrentfile(f)
+            end
+        else
+            (0..fnum-1).each do |i|
+                name, size, chsize, chdone, priority =
+                    sock.multicall(["f.get_path",id,i], ["f.get_size_bytes",id,i],
+                                   ["f.get_size_chunks",id,i],
+                                   ["f.get_completed_chunks",id,i],
+                                   ["f.get_priority",id,i])
+                done = size
+                done = chdone*chsize if chdone*chsize > size
+                Torrentfile.filter(:torrent_id => id).filter(:name => name).update(
+                    :downloaded => done, :priority => priority)
+            end
+        end
+     end
+  end
+
+  def update_trackers(id)
+    sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+    DB.transaction do
+        torrent = Torrent[id] 
+        if torrent.torrentfiles.length == 0 then
+            num    = sock.call("d.get_tracker_size",id)
+            (0..num-1).each do |i|
+                tracker = Tracker.new
+                tracker.url = sock.call("t.get_url",id,i)
+                torrent = Torrent[id]
+                torrent.add_tracker(tracker)
+            end
+        end
+    end
+  end
+
+  def update_torrent(x)
+      update_trackers(x)
+      update_files(x)
+  end
+
+  def update_torrents
       DB.transaction do
       Torrent.update(:updated => '0')
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
@@ -25,8 +77,6 @@ class Controller < Ramaze::Controller
           name, size, downloaded, up, down, stat, fnum, tracknum,
               chsize, chnum, chcmp, ratio =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
-# d.get_up_total and d.get_down_total return bytes upped and downloaded in this
-# session!
                            ["d.get_completed_bytes",x],
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
@@ -52,29 +102,6 @@ class Controller < Ramaze::Controller
             torrent.updated = 1
             torrent.ratio = ratio
             Torrent.insert(torrent)
-
-            # Add trackers
-            (0..tracknum-1).each do |i|
-               tracker = Tracker.new
-               tracker.url = sock.call("t.get_url","#{x}",i)
-               torrent = Torrent[x]
-               torrent.add_tracker(tracker)
-            end
-            
-            # Add files
-            (0..fnum-1).each do |i|
-               f = Torrentfile.new
-               f.name, f.size, chsize, chdone, priority =
-                   sock.multicall(["f.get_path",x,i],
-                                  ["f.get_size_bytes",x,i],
-                                  ["f.get_size_chunks",x,i],
-                                  ["f.get_completed_chunks",x,i],
-                                  ["f.get_priority",x,i])
-               f.downloaded = f.size
-               f.downloaded = chdone*chsize if chdone*chsize > f.size 
-               #f.downloaded = chdone*chsize
-               torrent.add_torrentfile(f)
-            end
           else
             # Update torrent
             torrent.update(
@@ -84,24 +111,10 @@ class Controller < Ramaze::Controller
                 :up => up, :down => down,
                 :stat => stat, :updated => 1,
                 :ratio => ratio)
-            (0..fnum-1).each do |i|
-               name, chnum, chdone, priority, size =
-                   sock.multicall(["f.get_path",x,i],
-                                  ["f.get_size_chunks",x,i],
-                                  ["f.get_completed_chunks",x,i],
-                                  ["f.get_priority",x,i],
-                                  ["f.get_size_bytes",x,i])
-                   done = chsize*chdone
-                   done = size if done > size
-               Torrentfile.filter(:torrent_id => x).filter(:name => name).update(
-                   :downloaded => done, :priority => priority)
-            end
           end
       end
       Torrent.filter('updated = ?', '0').delete
-      $last_update = Time.now
       end
-    end
   end
 end
 

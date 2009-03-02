@@ -9,7 +9,7 @@
 <table border="0">
   <tr><th>File Name</th><th>Size</th><th>Downloaded</th><th>Priority</th></tr>
   <?r @current_torrent.torrentfiles.each do |x| ?>
-  <tr><th>#{x[:name]}</th>
+  <tr><th align="left">#{x[:name]}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
       <th align="right">#{convert_bytes(x.downloaded)}</th>
       <th>#{x[:priority]}</th></tr>

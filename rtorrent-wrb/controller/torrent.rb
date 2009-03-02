@@ -1,18 +1,18 @@
 class TorrentController < Controller
   
   def index
-    check_update
+    update_torrents
     @title = "rTorrent: Torrents"
     @torrents = Torrent.all
   end
 
   def show(id=nil)
-      check_update
-      @current_torrent = Torrent[id]
-      if @current_torrent == nil then
+      if Torrent[id] == nil then
           redirect "/torrent"
       else
-          @title = @current_torrent[:name]
+          update_torrent(id)
+          @current_torrent = Torrent[id]
+          @title = @current_torrent.name
       end
   end
 
@@ -20,7 +20,6 @@ class TorrentController < Controller
   
   def convert_bytes(bytes)
       s = 1024.0
-
       [[s*s*s*s,'TB'],[s*s*s,'GB'],[s*s,'MB'],[s,'KB']].each do |x,t|
           if bytes >= x then
             c = bytes / x

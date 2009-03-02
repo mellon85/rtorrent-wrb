@@ -8,7 +8,6 @@
 class MainController < Controller
   # the index action is called automatically when no other action is specified
   def index
-    check_update
     redirect "/torrent"
   end
 
