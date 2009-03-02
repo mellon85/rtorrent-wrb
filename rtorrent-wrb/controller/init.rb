@@ -18,11 +18,11 @@ class Controller < Ramaze::Controller
     sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
     DB.transaction do
         torrent = Torrent[id] 
-        fnum    = sock.call("d.get_size_files",id)
+        fnum, chsize = sock.multicall(["d.get_size_files",id], ["d.get_chunk_size",id])
         if torrent.torrentfiles.length == 0 then
             (0..fnum-1).each do |i|
                 f = Torrentfile.new
-                f.name, f.size, chsize, chdone, f.priority = 
+                f.name, f.size, chnum, chdone, f.priority = 
                     sock.multicall(["f.get_path",id,i],["f.get_size_bytes",id,i],
                                          ["f.get_size_chunks",id,i],
                                          ["f.get_completed_chunks",id,i],
@@ -33,7 +33,7 @@ class Controller < Ramaze::Controller
             end
         else
             (0..fnum-1).each do |i|
-                name, size, chsize, chdone, priority =
+                name, size, chnum, chdone, priority =
                     sock.multicall(["f.get_path",id,i], ["f.get_size_bytes",id,i],
                                    ["f.get_size_chunks",id,i],
                                    ["f.get_completed_chunks",id,i],
