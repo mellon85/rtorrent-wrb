@@ -1,5 +1,6 @@
 class TorrentController < Controller
-  
+  helper :cache
+   
   def index
     update_torrents
     @title = "rTorrent: Torrents"
@@ -37,4 +38,7 @@ class TorrentController < Controller
   def print_ratio(ratio)
       return sprintf('%.02f', ratio/1000.0)
   end
+
+  cache :index, :ttl => $conf[:update_time]
+  cache :show, :ttl => $conf[:update_time]
 end
