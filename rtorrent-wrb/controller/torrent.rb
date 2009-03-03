@@ -22,6 +22,12 @@ class TorrentController < Controller
       end
   end
 
+  def logout
+      action_cache.delete '/torrent/index'
+      action_cache.delete '/torrent/show'
+      super
+  end
+
   private
   
   def convert_bytes(bytes)
