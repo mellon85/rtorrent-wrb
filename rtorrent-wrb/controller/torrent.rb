@@ -1,6 +1,7 @@
 class TorrentController < Controller
   helper :cache
   helper :auth
+  helper :sha1
 
   before(:index) { login_required }
   before(:show) { login_required }
@@ -51,7 +52,8 @@ class TorrentController < Controller
   def check_auth user, pass
     return false if (not user or user.empty?) and (not pass or pass.empty?)
 
-    if user == "dario" && pass == "dario" then
+    pass = sha1(pass)
+    if user == $conf[:username] && pass == $conf[:passwordSHA1] then
         true
     else
       flash[:error] = 'invalid username or password'
