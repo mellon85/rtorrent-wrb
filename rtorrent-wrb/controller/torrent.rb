@@ -51,7 +51,7 @@ class TorrentController < Controller
   def check_auth user, pass
     return false if (not user or user.empty?) and (not pass or pass.empty?)
 
-    if user == "dario" && password = "dario" then
+    if user == "dario" && pass == "dario" then
         true
     else
       flash[:error] = 'invalid username or password'
