@@ -1,6 +1,9 @@
 class TorrentController < Controller
   helper :cache
-   
+  helper :auth
+
+  before(:index) { login_required }
+  
   def index
     update_torrents
     @title = "rTorrent: Torrents"
@@ -39,6 +42,22 @@ class TorrentController < Controller
       return sprintf('%.02f', ratio/1000.0)
   end
 
+  def login_required
+    flash[:error] = 'login required to view that page' unless logged_in?
+    super
+  end
+
+  def check_auth user, pass
+    return false if (not user or user.empty?) and (not pass or pass.empty?)
+
+    if user == "dario" && password = "dario" then
+        true
+    else
+      flash[:error] = 'invalid username or password'
+      false
+    end
+  end
+  
   cache :index, :ttl => $conf[:update_time]
   cache :show, :ttl => $conf[:update_time]
 end
