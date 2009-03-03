@@ -3,6 +3,7 @@ class TorrentController < Controller
   helper :auth
 
   before(:index) { login_required }
+  before(:show) { login_required }
   
   def index
     update_torrents
