@@ -1,8 +1,12 @@
 <?r if logged_in? == false then ?>
 <form method="POST" action="#{Rs(:login)}">
-    Username <input type="text" name="username" /><br/>
-    Password <input type="password" name="password" /><br/>
-    <input type="submit" name="login" /><br/>
+    <table border="0">
+        <tr><th>Username</th>
+            <th><input type="text" name="username" /></th></tr>
+        <tr><th>Password</th>
+            <th><input type="password" name="password" /></th></tr>
+    </table><br/>
+    <input type="submit" name="login" />
 </form>
 <?r else ?>
 #{A(:logout)}
