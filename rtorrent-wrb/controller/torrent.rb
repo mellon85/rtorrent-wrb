@@ -24,6 +24,7 @@ class TorrentController < Controller
       end
       p = current_priority.to_i + 1
       sock.call("f.set_priority",id,fnum.to_i,p)
+      action_cache.delete '/torrent/show'
       update_files(id)
       redirect "/torrent/show/#{id}"
   end
@@ -35,6 +36,7 @@ class TorrentController < Controller
       end
       p = current_priority.to_i - 1
       sock.call("f.set_priority",id,fnum.to_i,p)
+      action_cache.delete '/torrent/show'
       update_files(id)
       redirect "/torrent/show/#{id}"
   end
