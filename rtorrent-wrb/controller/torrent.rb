@@ -17,6 +17,28 @@ class TorrentController < Controller
       end
   end
 
+  def priority_up(id=nil,current_priority=nil,fnum=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      if current_priority == "2" then
+          return
+      end
+      p = current_priority.to_i + 1
+      sock.call("f.set_priority",id,fnum.to_i,p)
+      update_files(id)
+      redirect "/torrent/show/#{id}"
+  end
+
+  def priority_down(id=nil,current_priority=nil,fnum=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      if current_priority == "0" then
+          return
+      end
+      p = current_priority.to_i - 1
+      sock.call("f.set_priority",id,fnum.to_i,p)
+      update_files(id)
+      redirect "/torrent/show/#{id}"
+  end
+
   private
   
   def convert_bytes(bytes)
@@ -37,6 +59,17 @@ class TorrentController < Controller
 
   def print_ratio(ratio)
       return sprintf('%.02f', ratio/1000.0)
+  end
+
+  def print_priority(p)
+      case p
+      when 0
+          return "Off"
+      when 1
+          return "Normal"
+      when 2
+          return "High"
+      end
   end
 
   cache :index, :ttl => $conf[:update_time]

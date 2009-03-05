@@ -8,13 +8,21 @@
 <div id="files">
 <table border="0">
   <tr><th>File Name</th><th>Size</th><th>Downloaded</th><th>Priority</th></tr>
+  <?r i = 0 ?>
   <?r @current_torrent.torrentfiles.each do |x| ?>
-  <tr><th align="left">#{x[:name]}</th>
+  <tr>
+      <th align="left">#{x[:name]}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
       <th align="right">#{convert_bytes(x.downloaded)}</th>
-      <th>#{x[:priority]}</th></tr>
+      <th>#{print_priority(x.priority)}</th>
+      <th>
+          <a href="/torrent/priority_up/#{@current_torrent[:torrent_id]}/#{x.priority}/#{i}">+</a>
+      </th>
+      <th>
+          <a href="/torrent/priority_down/#{@current_torrent[:torrent_id]}/#{x.priority}/#{i}">-</a>
+      </th></tr>
+  <?r i+=1 ?>
   <?r end ?>
-  <tr><th>
 </table>
 </div>
 <div id="trackers">
