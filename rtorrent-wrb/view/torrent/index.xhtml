@@ -6,13 +6,14 @@
 <?r else ?>
 
 <table border="0">
-    <tr><th>Name</th><th>Size</th><th>Downloaded</th><th>Uploaded</th>
+  <tr><th>Name</th><th>Size</th><th>State</th><th>Downloaded</th><th>Uploaded</th>
       <th>Download</th><th>Upload</th><th>Ratio</th>
         </tr>
 
 <?r @torrents.each do |x| ?>
 <tr><th align="left"><a href="torrent/show/#{x[:torrent_id]}">#{x[:name]}</a></th>
     <th>#{convert_bytes(x.size)}</th>
+    <th><a href="/torrent/pauseResume/#{x.torrent_id}/#{x.active}">#{x.active}</a></th>
     <th>#{convert_bytes(x.downloaded)}</th>
     <th>#{convert_bytes(x.uploaded)}</th>
     <th>#{convert_bytes(x.down)}</th>

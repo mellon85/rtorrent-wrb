@@ -75,14 +75,15 @@ class Controller < Ramaze::Controller
       tlist = sock.call("download_list", "main")
       tlist.each do |x|
           name, size, downloaded, up, down, stat, fnum, tracknum,
-              chsize, chnum, chcmp, ratio =
+              chsize, chnum, chcmp, ratio, active =
             sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
                            ["d.get_completed_bytes",x],
                            ["d.get_up_rate",x],["d.get_down_rate",x],
                            ["d.get_state",x],["d.get_size_files",x],
                            ["d.get_tracker_size",x],
                            ["d.get_chunk_size",x],["d.get_size_chunks",x],
-                           ["d.get_completed_chunks",x],["d.get_ratio",x])
+                           ["d.get_completed_chunks",x],["d.get_ratio",x],
+                           ["d.is_active",x])
           size = chsize*chnum if size < chsize*chnum
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
           uploaded = downloaded*ratio/1000.0
@@ -101,6 +102,7 @@ class Controller < Ramaze::Controller
             torrent.stat = 0
             torrent.updated = 1
             torrent.ratio = ratio
+            torrent.active = active
             Torrent.insert(torrent)
           else
             # Update torrent
@@ -110,7 +112,7 @@ class Controller < Ramaze::Controller
                 :uploaded => uploaded,
                 :up => up, :down => down,
                 :stat => stat, :updated => 1,
-                :ratio => ratio)
+                :ratio => ratio, :active => active)
           end
       end
       Torrent.filter('updated = ?', '0').delete
