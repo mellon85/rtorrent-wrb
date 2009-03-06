@@ -24,9 +24,9 @@ class TorrentController < Controller
       else
           sock.call("d.pause",id)
       end
-      action_cache.clear
+      action_cache.delete "/torrent/index"
       update_torrents
-      redirect '/torrent'
+      redirect "/torrent"
   end
 
   def priority_up(id=nil,current_priority=nil,fnum=nil)
@@ -37,9 +37,9 @@ class TorrentController < Controller
       end
       p = current_priority.to_i + 1
       sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.clear
+      action_cache.delete "/torrent/show/#{id}"
       update_files(id)
-      redirect '/torrent/show/#{id}'
+      redirect "/torrent/show/#{id}"
   end
 
   def priority_down(id=nil,current_priority=nil,fnum=nil)
@@ -50,9 +50,9 @@ class TorrentController < Controller
       end
       p = current_priority.to_i - 1
       sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.clear
+      action_cache.delete "/torrent/show/#{id}"
       update_files(id)
-      redirect '/torrent/show/#{id}'
+      redirect "/torrent/show/#{id}"
   end
 
   private
