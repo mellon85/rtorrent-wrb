@@ -23,8 +23,7 @@ class TorrentController < Controller
   end
 
   def logout
-      action_cache.delete '/torrent/index'
-      action_cache.delete '/torrent/show'
+      action_cache.clear
       super
   end
 
