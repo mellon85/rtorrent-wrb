@@ -5,6 +5,7 @@ class TorrentController < Controller
 
   before(:index) { login_required }
   before(:show) { login_required }
+  before(:config) { login_required }
   
   def index
     update_torrents
@@ -63,6 +64,17 @@ class TorrentController < Controller
   def logout
       action_cache.clear
       super
+  end
+
+  def save_config
+      $conf[:port] = request[:port]
+      $conf[:rtorrent_socket] = request[:socket]
+      $conf[:passwordSHA1] = 
+          sha1(request[:password]) if request[:password] != nil
+      $conf[:update_time]  = request[:update_time]
+      $conf[:username]     = request[:username]
+      save_conf_to_file
+      redirect '/torrent'
   end
 
   private

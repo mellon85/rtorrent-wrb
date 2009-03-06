@@ -1,0 +1,18 @@
+<form method="POST" action="#{Rs(:save_config)}">
+    <table border="0">
+        <tr><th>Username</th>
+            <th><input type="text" name="username"
+                value="#{$conf[:username]}" /></th></tr>
+        <tr><th>Password</th>
+            <th><input type="password" name="password" /></th></tr>
+        <tr><th>Socket Path</th>
+            <th><input type="text" name="socket" value="#{$conf[:rtorrent_socket]}"/></th></tr>
+        <tr><th>Update Time</th>
+            <th><input type="text" name="update_time"
+                value="#{$conf[:update_time]}" /></th></tr>
+        <tr><th>Port</th>
+            <th><input type="text" name="socket" value="#{$conf[:port]}"/></th></tr>
+    </table><br/>
+    <input type="submit" name="login" />
+</form>
+<p><a href="#{Rs(:index)}">back</a></p>

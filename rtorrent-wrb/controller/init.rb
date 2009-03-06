@@ -123,8 +123,8 @@ end
 # load program configuration
 $conf = YAML.load_file("rtorrent-wrb.conf")
 
-def save_conf()
-    f = File.open("rtorrent-wrb.conf")
+def save_conf_to_file()
+    f = File.open("rtorrent-wrb.conf","w")
     f.write(YAML.dump($conf))
     f.close
 end
