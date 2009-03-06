@@ -5,7 +5,8 @@ $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :username        => "",
          :passwordSHA1    => "",
          :update_time     => 60,
-         :port            => 7000}
+         :port            => 7000,
+         :torrent_save_path => "/tmp"}
 
 class Controller < Ramaze::Controller
   layout '/page'

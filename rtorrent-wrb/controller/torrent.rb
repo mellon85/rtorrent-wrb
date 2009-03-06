@@ -75,6 +75,18 @@ class TorrentController < Controller
       $conf[:update_time]  = request[:update_time].to_i
       $conf[:username]     = request[:username]
       save_conf_to_file
+  end
+
+  def send_torrent
+      @title="Send Torrent"
+  end
+
+  def receive_torrent
+      tempfile, filename, @type =
+                request[:torrent].values_at(:tempfile, :filename, :type)
+      @extname, @basename = File.extname(filename), File.basename(filename)
+      @file_size = tempfile.size
+      FileUtils.move(tempfile.path, "#{$conf[:torrent_save_path]}/#{@basename}")
       redirect '/torrent'
   end
 
