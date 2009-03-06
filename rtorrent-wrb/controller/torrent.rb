@@ -19,7 +19,7 @@ class TorrentController < Controller
 
   def pauseResume(id=nil,active=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      if active == 0 then
+      if active == "0" then
           sock.call("d.resume",id)
       else
           sock.call("d.pause",id)
