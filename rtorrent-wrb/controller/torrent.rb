@@ -24,33 +24,35 @@ class TorrentController < Controller
       else
           sock.call("d.pause",id)
       end
-      action_cache.delete '/torrent'
+      action_cache.clear
       update_torrents
-      redirect "/torrent"
+      redirect '/torrent'
   end
 
   def priority_up(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       if current_priority == "2" then
+          redirect "/torrent/show/#{id}"
           return
       end
       p = current_priority.to_i + 1
       sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.delete '/torrent/show/#{id}'
+      action_cache.clear
       update_files(id)
-      redirect "/torrent/show/#{id}"
+      redirect '/torrent/show/#{id}'
   end
 
   def priority_down(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       if current_priority == "0" then
+          redirect "/torrent/show/#{id}"
           return
       end
       p = current_priority.to_i - 1
       sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.delete '/torrent/show/#{id}'
+      action_cache.clear
       update_files(id)
-      redirect "/torrent/show/#{id}"
+      redirect '/torrent/show/#{id}'
   end
 
   private
