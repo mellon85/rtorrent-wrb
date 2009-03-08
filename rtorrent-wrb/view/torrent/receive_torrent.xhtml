@@ -1,0 +1,9 @@
+
+<h1>#{@title}</h1>
+
+The file sent was not a torrent file. It must have ".torrent" as
+extension.
+<p>
+#{render_partial(Rs(:send_torrent))}
+</p>
+<a href="#{Rs(:index)}">back</a>

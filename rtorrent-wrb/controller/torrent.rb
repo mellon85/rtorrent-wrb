@@ -78,7 +78,9 @@ class TorrentController < Controller
       end
       $conf[:update_time]  = request[:update_time].to_i
       $conf[:username]     = request[:username]
+      $conf[:torrent_save_path] = request[:save_path]
       save_conf_to_file
+      redirect :index
   end
 
   def send_torrent
