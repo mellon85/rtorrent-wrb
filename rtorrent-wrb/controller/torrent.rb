@@ -2,10 +2,14 @@ class TorrentController < Controller
   helper :cache
   helper :auth
   helper :sha1
+  helper :partial
 
   before(:index) { login_required }
   before(:show) { login_required }
   before(:config) { login_required }
+  before(:send_torrent) {login_required}
+  before(:receive_torrent) {login_required}
+  before(:save_config) {login_required}
   
   def index
     update_torrents
@@ -85,9 +89,13 @@ class TorrentController < Controller
       tempfile, filename, @type =
                 request[:torrent].values_at(:tempfile, :filename, :type)
       @extname, @basename = File.extname(filename), File.basename(filename)
-      @file_size = tempfile.size
-      FileUtils.move(tempfile.path, "#{$conf[:torrent_save_path]}/#{@basename}")
-      redirect '/torrent'
+      if @extname == ".torrent" then
+          FileUtils.move(tempfile.path, "#{$conf[:torrent_save_path]}/#{@basename}")
+          redirect '/torrent'
+      else
+          FileUtils.rm(tempfile.path)
+          @title = "Error sending torrent_file"
+      end
   end
 
   private
