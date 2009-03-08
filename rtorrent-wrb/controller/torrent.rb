@@ -69,8 +69,6 @@ class TorrentController < Controller
   def save_config
       $conf[:port] = request[:port].to_i
       $conf[:rtorrent_socket] = request[:socket]
-      require 'pp'
-      pp request[:password]
       if request[:password] != "" then 
           $conf[:passwordSHA1] = sha1(request[:password])
       end
@@ -120,13 +118,7 @@ class TorrentController < Controller
 
   def check_auth user, pass
     return false if (not user or user.empty?) and (not pass or pass.empty?)
-    require 'pp'
-    pp user
-    pp pass
     pass = sha1(pass)
-    pp pass
-    pp $conf[:username]
-    pp $conf[:passwordSHA1] 
     if user == $conf[:username] && pass == $conf[:passwordSHA1] then
         true
     else
