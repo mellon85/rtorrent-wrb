@@ -67,11 +67,14 @@ class TorrentController < Controller
   end
 
   def save_config
-      $conf[:port] = request[:port]
+      $conf[:port] = request[:port].to_i
       $conf[:rtorrent_socket] = request[:socket]
-      $conf[:passwordSHA1] = 
-          sha1(request[:password]) if request[:password] != nil
-      $conf[:update_time]  = request[:update_time]
+      require 'pp'
+      pp request[:password]
+      if request[:password] != "" then 
+          $conf[:passwordSHA1] = sha1(request[:password])
+      end
+      $conf[:update_time]  = request[:update_time].to_i
       $conf[:username]     = request[:username]
       save_conf_to_file
       redirect '/torrent'
@@ -117,8 +120,13 @@ class TorrentController < Controller
 
   def check_auth user, pass
     return false if (not user or user.empty?) and (not pass or pass.empty?)
-
+    require 'pp'
+    pp user
+    pp pass
     pass = sha1(pass)
+    pp pass
+    pp $conf[:username]
+    pp $conf[:passwordSHA1] 
     if user == $conf[:username] && pass == $conf[:passwordSHA1] then
         true
     else
