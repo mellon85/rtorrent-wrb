@@ -1,5 +1,9 @@
 <form action="receive_torrent" method="post" enctype="multipart/form-data" >
     <input type="file" name="torrent" />
+    <input type="radio" name="upload_type" value="xmlrpc"> XMLRPC
+    <?r $conf[:torrent_save_path].split(',').each do |x| ?>
+    <input type="radio" name="upload_type" value="#{x}"> #{x}
+    <?r end ?>
     <input type="submit" />
 </form>
 <p>

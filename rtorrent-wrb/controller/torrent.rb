@@ -1,3 +1,4 @@
+require 'pp'
 class TorrentController < Controller
   helper :cache
   helper :auth
@@ -91,9 +92,16 @@ class TorrentController < Controller
       tempfile, filename, @type =
                 request[:torrent].values_at(:tempfile, :filename, :type)
       @extname, @basename = File.extname(filename), File.basename(filename)
+      mode = request[:upload_type]
       if @extname == ".torrent" then
-          FileUtils.move(tempfile.path, "#{$conf[:torrent_save_path]}/#{@basename}")
-          redirect '/torrent'
+          if mode == "xmlrpc" then
+              sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+              sock.call("load",tempfile.path)
+              redirect '/torrent'
+          else
+              FileUtils.move(tempfile.path, "#{mode}/#{@basename}")
+          end
+              redirect '/torrent'
       else
           FileUtils.rm(tempfile.path)
           @title = "Error sending torrent_file"
