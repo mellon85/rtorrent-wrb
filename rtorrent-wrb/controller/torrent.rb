@@ -40,6 +40,16 @@ class TorrentController < Controller
       redirect "/torrent"
   end
 
+  def set_priority
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      id, files, priority = request[:torrentID, :selectedFiles, :priority]
+      files.each do |f|
+          sock.call("f.set_priority",id,f.to_i,priority)
+      end
+      action_cache.delete "/torrent/show/#{id}"
+      update_files(id)
+      redirect "/torrent/show/#{id}"
+  end
   def priority_up(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       if current_priority == "2" then

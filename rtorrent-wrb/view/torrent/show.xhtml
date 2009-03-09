@@ -7,10 +7,13 @@
 </div>
 <div id="files">
 <table border="0">
-  <tr><th>File Name</th><th>Size</th><th>Downloaded</th><th>Priority</th></tr>
+<form action="#{Rs(:set_priority)}" method="post" enctype="multipart/form-data">
+  <input type="hidden" name="torrentID" value="#{@current_torrent.torrent_id}" />
+  <tr></th><th><th>File Name</th><th>Size</th><th>Downloaded</th><th>Priority</th></tr>
   <?r i = 0 ?>
   <?r @current_torrent.torrentfiles.each do |x| ?>
   <tr>
+     <th><input type="checkbox" name="selectedFiles[]" value="#{i}"></th>
       <th align="left">#{x[:name]}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
       <th align="right">#{convert_bytes(x.downloaded)}</th>
@@ -24,6 +27,13 @@
   <?r i+=1 ?>
   <?r end ?>
 </table>
+<input type="submit" value="Change Priority"/>
+<select name="priority">
+  <option value="0">Off</option>
+  <option value="1">Normal</option>
+  <option value="2">Hight</option>
+</select>
+</form>
 </div>
 <div id="trackers">
 <p><b>Trackers:</b><br>
