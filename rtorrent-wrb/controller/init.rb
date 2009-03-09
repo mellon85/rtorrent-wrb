@@ -122,7 +122,7 @@ class Controller < Ramaze::Controller
 end
 
 # load program configuration
-$conf = YAML.load_file("rtorrent-wrb.conf")
+$conf = YAML.load_file("#{ENV['HOME']}/.rtorrent-wrb.conf")
 
 def save_conf_to_file()
     f = File.open("rtorrent-wrb.conf","w")

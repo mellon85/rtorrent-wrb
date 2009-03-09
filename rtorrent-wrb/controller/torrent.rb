@@ -97,10 +97,11 @@ class TorrentController < Controller
           if mode == "xmlrpc" then
               sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
               sock.call("load",tempfile.path)
-              redirect '/torrent'
           else
               FileUtils.move(tempfile.path, "#{mode}/#{@basename}")
           end
+              action_cache.delete "/torrent/index"
+              update_torrents
               redirect '/torrent'
       else
           FileUtils.rm(tempfile.path)
