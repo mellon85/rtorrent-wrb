@@ -32,9 +32,20 @@ class TorrentController < Controller
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       if active == "0" then
           sock.call("d.resume",id)
+          sock.call("d.try_start",id)
       else
           sock.call("d.pause",id)
       end
+      action_cache.delete "/torrent/index"
+      update_torrents
+      redirect "/torrent"
+  end
+
+  def remove(id=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      #sock.call("d.delete_link",id)
+      sock.call("d.stop",id)
+      sock.call("d.erase",id)
       action_cache.delete "/torrent/index"
       update_torrents
       redirect "/torrent"

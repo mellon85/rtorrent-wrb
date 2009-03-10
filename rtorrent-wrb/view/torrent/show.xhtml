@@ -6,6 +6,7 @@
     Torrent hash: #{@current_torrent[:torrent_id]}
 </div>
 <div id="files">
+<a href="/torrent/remove/#{@current_torrent[:torrent_id]}">Remove</a>
 <table border="0">
 <form action="#{Rs(:set_priority)}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="torrentID" value="#{@current_torrent.torrent_id}" />
