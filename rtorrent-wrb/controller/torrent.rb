@@ -54,7 +54,7 @@ class TorrentController < Controller
   def set_priority
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       id, files, priority = request[:torrentID, :selectedFiles, :priority]
-      if files /= nil
+      if files != nil
           files.each do |f|
               sock.call("f.set_priority",id,f.to_i,priority)
           end
