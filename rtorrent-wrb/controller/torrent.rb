@@ -17,12 +17,14 @@ class TorrentController < Controller
     update_torrents
     @title = "rTorrent: All Torrents"
     @torrents = Torrent.all
+    @view_name = "All"
   end
 
   def completed
       update_torrents
       @title = "rTorrent: Completed Torrents"
       @torrents = Torrent.filter(:done => 1)
+      @view_name = "Completed"
       render_template :index
   end
 
@@ -30,6 +32,7 @@ class TorrentController < Controller
       update_torrents
       @title = "rTorrent: Seeding"
       @torrents = Torrent.filter(:done => 1).filter(:active => 1)
+      @view_name = "Seeding"
       render_template :index
   end
 
@@ -37,6 +40,7 @@ class TorrentController < Controller
       update_torrents
       @title = "rTorrent: Downloading"
       @torrents = Torrent.filter(:done => 0).filter(:active => 1)
+      @view_name = "Downloading"
       render_template :index
   end
 

@@ -1,13 +1,14 @@
-<h1>Torrent List</h1>
+<h1>Torrent List: #{@view_name}</h1>
 
 <div id="torrents">
 <?r if @torrents.empty? then ?>
 <h3>No torrents</h3>
 <?r else ?>
 
-<a href="#{Rs(:completed)}">Completed torrents</a>
-<a href="#{Rs(:downloading)}">Downloading torrents</a>
-<a href="#{Rs(:seeding)}">Seeding torrents</a>
+<a href="#{Rs(:index)}">All</a>
+<a href="#{Rs(:completed)}">Completed</a>
+<a href="#{Rs(:downloading)}">Downloading</a>
+<a href="#{Rs(:seeding)}">Seeding</a>
 
 <table border="0">
   <tr><th>Name</th><th>Size</th><th>State</th><th>Downloaded</th><th>Uploaded</th>
