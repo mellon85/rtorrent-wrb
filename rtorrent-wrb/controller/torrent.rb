@@ -1,4 +1,3 @@
-require 'pp'
 class TorrentController < Controller
   helper :cache
   helper :auth
@@ -14,16 +13,16 @@ class TorrentController < Controller
   before(:save_config) {login_required}
   
   def index
-    update_torrents
-    @title = "rTorrent: All Torrents"
-    @torrents = Torrent.all
-    @view_name = "All"
+      update_torrents
+      @title = "rTorrent: All Torrents"
+      @torrents = Torrent.all
+      @view_name = "All"
   end
 
   def completed
       update_torrents
       @title = "rTorrent: Completed Torrents"
-      @torrents = Torrent.filter(:done => 1)
+      @torrents = Torrent.filter(:downloaded >= :size)
       @view_name = "Completed"
       render_template :index
   end
@@ -31,7 +30,7 @@ class TorrentController < Controller
   def seeding
       update_torrents
       @title = "rTorrent: Seeding"
-      @torrents = Torrent.filter(:done => 1).filter(:active => 1)
+      @torrents = Torrent.filter(:downloaded >= :size).filter(:active => 1)
       @view_name = "Seeding"
       render_template :index
   end
@@ -39,7 +38,7 @@ class TorrentController < Controller
   def downloading
       update_torrents
       @title = "rTorrent: Downloading"
-      @torrents = Torrent.filter(:done => 0).filter(:active => 1)
+      @torrents = Torrent.filter(:downloaded < :size)
       @view_name = "Downloading"
       render_template :index
   end
@@ -63,7 +62,6 @@ class TorrentController < Controller
           sock.call("d.pause",id)
       end
       action_cache.delete "/torrent/index"
-      update_torrents
       redirect "/torrent"
   end
 
@@ -151,7 +149,6 @@ class TorrentController < Controller
               FileUtils.move(tempfile.path, "#{mode}/#{@basename}")
           end
               action_cache.delete "/torrent/index"
-              update_torrents
               redirect '/torrent'
       else
           FileUtils.rm(tempfile.path)

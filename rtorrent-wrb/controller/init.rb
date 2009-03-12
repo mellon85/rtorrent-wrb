@@ -104,7 +104,6 @@ class Controller < Ramaze::Controller
             torrent.updated = 1
             torrent.ratio = ratio
             torrent.active = active
-            torrent.done = done
             Torrent.insert(torrent)
           else
             # Update torrent
@@ -114,8 +113,7 @@ class Controller < Ramaze::Controller
                 :uploaded => uploaded,
                 :up => up, :down => down,
                 :stat => stat, :updated => 1,
-                :ratio => ratio, :active => active,
-                :done => done)
+                :ratio => ratio, :active => active)
           end
       end
       Torrent.filter('updated = ?', '0').delete
