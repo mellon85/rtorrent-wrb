@@ -19,22 +19,25 @@ class TorrentController < Controller
     @torrents = Torrent.all
   end
 
-  def completes
+  def completed
       update_torrents
       @title = "rTorrent: Completed Torrents"
       @torrents = Torrent.filter(:done => 1)
+      render_template :index
   end
 
   def seeding
       update_torrents
       @title = "rTorrent: Seeding"
       @torrents = Torrent.filter(:done => 1).filter(:active => 1)
+      render_template :index
   end
 
   def downloading
       update_torrents
       @title = "rTorrent: Downloading"
       @torrents = Torrent.filter(:done => 0).filter(:active => 1)
+      render_template :index
   end
 
   def show(id=nil)
