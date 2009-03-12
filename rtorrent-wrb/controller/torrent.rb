@@ -6,6 +6,7 @@ class TorrentController < Controller
   helper :partial
 
   before(:index) { login_required }
+  before(:completes) { login_required }
   before(:show) { login_required }
   before(:config) { login_required }
   before(:send_torrent) {login_required}
@@ -14,8 +15,26 @@ class TorrentController < Controller
   
   def index
     update_torrents
-    @title = "rTorrent: Torrents"
+    @title = "rTorrent: All Torrents"
     @torrents = Torrent.all
+  end
+
+  def completes
+      update_torrents
+      @title = "rTorrent: Completed Torrents"
+      @torrents = Torrent.filter(:done => 1)
+  end
+
+  def seeding
+      update_torrents
+      @title = "rTorrent: Seeding"
+      @torrents = Torrent.filter(:done => 1).filter(:active => 1)
+  end
+
+  def downloading
+      update_torrents
+      @title = "rTorrent: Downloading"
+      @torrents = Torrent.filter(:done => 0).filter(:active => 1)
   end
 
   def show(id=nil)
