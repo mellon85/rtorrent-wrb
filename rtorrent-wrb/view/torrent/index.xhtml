@@ -20,7 +20,8 @@
 <?r @torrents.each do |x| ?>
 <tr><th align="left"><a href="torrent/show/#{x[:torrent_id]}">#{x[:name]}</a></th>
     <th>#{convert_bytes(x.size)}</th>
-    <th><a href="/torrent/pauseResume/#{x.torrent_id}/#{x.active}">
+    <th><a
+            href="/torrent/pauseResume/#{x.torrent_id}/#{x.active}/#{@view_name}">
         #{print_status(x)}
     </a></th>
     <th>#{convert_bytes(x.downloaded)}</th>

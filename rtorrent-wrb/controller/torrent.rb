@@ -12,6 +12,10 @@ class TorrentController < Controller
   before(:receive_torrent) {login_required}
   before(:save_config) {login_required}
   
+  def all
+      redirect '/torrent'
+  end
+
   def index
       update_torrents
       @title = "rTorrent: All Torrents"
@@ -53,7 +57,7 @@ class TorrentController < Controller
       end
   end
 
-  def pauseResume(id=nil,active=nil)
+  def pauseResume(id=nil,active=nil,view="All")
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       if active == "0" then
           sock.call("d.resume",id)
@@ -62,7 +66,7 @@ class TorrentController < Controller
           sock.call("d.pause",id)
       end
       action_cache.delete "/torrent/index"
-      redirect "/torrent"
+      redirect "/torrent/#{view.downcase}"
   end
 
   def remove(id=nil)
