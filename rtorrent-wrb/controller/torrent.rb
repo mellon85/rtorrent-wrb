@@ -189,6 +189,22 @@ class TorrentController < Controller
       end
   end
 
+  def print_status(x)
+      if x.active == 1 then
+          if x.downloaded >= x.size then
+              "seeding"
+          else
+              "pause"
+          end
+      else
+          if x.downloaded >= x.size then
+              "not seeding"
+          else
+              "stopped"
+          end
+      end
+  end
+
   def login_required
     flash[:error] = 'login required to view that page' unless logged_in?
     super
