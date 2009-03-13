@@ -196,13 +196,13 @@ class TorrentController < Controller
   def print_status(x)
       if x.active == 1 then
           if x.downloaded >= x.size then
-              "seeding"
+              "pause seeding"
           else
               "pause"
           end
       else
           if x.downloaded >= x.size then
-              "not seeding"
+              "seeding"
           else
               "stopped"
           end
