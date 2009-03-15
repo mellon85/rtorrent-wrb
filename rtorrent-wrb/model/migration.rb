@@ -12,7 +12,6 @@ class Database < Sequel::Migration
             column  :uploaded,:integer
             column  :up   ,:integer
             column  :down ,:integer
-            column  :stat ,:integer
             column  :updated, :integer
             column  :ratio, :integer
             column  :active, :integer
