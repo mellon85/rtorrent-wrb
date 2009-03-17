@@ -5,12 +5,19 @@ class TorrentController < Controller
   helper :partial
 
   before(:index) { login_required }
-  before(:completes) { login_required }
+  before(:completed) { login_required }
+  before(:seeding) { login_required }
+  before(:downloading) { login_required }
   before(:show) { login_required }
   before(:config) { login_required }
   before(:send_torrent) {login_required}
   before(:receive_torrent) {login_required}
   before(:save_config) {login_required}
+  before(:pauseResume) {login_required}
+  before(:remove) {login_required}
+  before(:set_priority) {login_required}
+  before(:priority_up) {login_required}
+  before(:priority_down) {login_required}
   
   def all
       redirect '/torrent'
