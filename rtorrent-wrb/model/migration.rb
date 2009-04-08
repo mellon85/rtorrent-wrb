@@ -1,6 +1,7 @@
 # Here goes your database connection and options:
 
 require 'rubygems'
+require 'sequel/extensions/migration'
 require 'sequel'
 
 class Database < Sequel::Migration
