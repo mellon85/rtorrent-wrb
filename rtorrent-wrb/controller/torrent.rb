@@ -4,20 +4,21 @@ class TorrentController < Controller
   helper :sha1
   helper :partial
 
-  before(:index) { login_required }
-  before(:completed) { login_required }
-  before(:seeding) { login_required }
-  before(:downloading) { login_required }
-  before(:show) { login_required }
-  before(:config) { login_required }
-  before(:send_torrent) {login_required}
-  before(:receive_torrent) {login_required}
-  before(:save_config) {login_required}
-  before(:pauseResume) {login_required}
-  before(:remove) {login_required}
-  before(:set_priority) {login_required}
-  before(:priority_up) {login_required}
-  before(:priority_down) {login_required}
+  before(:index)             { login_required }
+  before(:completed)         { login_required }
+  before(:seeding)           { login_required }
+  before(:downloading)       { login_required }
+  before(:show)              { login_required }
+  before(:config)            { login_required }
+  before(:send_torrent)      { login_required }
+  before(:receive_torrent)   { login_required }
+  before(:save_config)       { login_required }
+  before(:togglePause)       { login_required }
+  before(:remove)            { login_required }
+  before(:set_priority)      { login_required }
+  before(:priority_up)       { login_required }
+  before(:priority_down)     { login_required }
+  before(:button_for_status) { login_required }
   
   def all
       redirect '/torrent'
@@ -64,16 +65,16 @@ class TorrentController < Controller
       end
   end
 
-  def pauseResume(id=nil,active=nil,view="All")
+  def togglePause(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      if active == "0" then
+      if Torrent[id].active == 0 then
           sock.call("d.resume",id)
           sock.call("d.try_start",id)
       else
           sock.call("d.pause",id)
       end
+      update_torrents
       action_cache.delete "/torrent/index"
-      redirect "/torrent/#{view.downcase}"
   end
 
   def remove(id=nil)
@@ -167,6 +168,24 @@ class TorrentController < Controller
       end
   end
 
+  layout '/nolayout' => [ :button_for_status ]
+  def button_for_status(id)
+      x = Torrent[id]
+      if x.active != 1 then
+          if x.downloaded >= x.size then
+              return "start_seed"
+          else
+              return "start"
+          end
+      else
+          if x.downloaded >= x.size then
+              return "pause_seed"
+          else
+              return "pause"
+          end
+      end
+  end
+
   private
   
   def convert_bytes(bytes)
@@ -200,21 +219,7 @@ class TorrentController < Controller
       end
   end
 
-  def button_for_status(x)
-      if x.active != 1 then
-          if x.downloaded >= x.size then
-              "start_seed"
-          else
-              "start"
-          end
-      else
-          if x.downloaded >= x.size then
-              "pause_seed"
-          else
-              "pause"
-          end
-      end
-  end
+    
 
   def login_required
     flash[:error] = 'login required to view that page' unless logged_in?

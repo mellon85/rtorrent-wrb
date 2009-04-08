@@ -12,6 +12,17 @@
 <h3>No torrents</h3>
 <?r else ?>
 
+<script language="javascript">
+function change_status(id) {
+    $.post("/torrent/togglePause/"+id,{}
+        ,function(data){
+           $.get("/torrent/button_for_status/"+id,{},function(button) {
+                $('#'+id).attr("src","/images/button_"+button+".png");
+            },"text")
+        });
+}
+</script>
+
 <table border="0" valign="middle">
   <tr><th>Name</th><th>Size</th><th>Downloaded</th><th>Uploaded</th>
       <th>Download</th><th>Upload</th><th>Ratio</th>
@@ -19,9 +30,10 @@
 
 <?r @torrents.each do |x| ?>
 <tr><th align="left">
-    <a href="/torrent/pauseResume/#{x.torrent_id}/#{x.active}/#{@view_name}">
-        <img width="20" height="20" border="0"
-            src="/images/button_#{button_for_status(x)}.png"/></a>
+    <a onclick='change_status(\"#{x.torrent_id}\")'>
+        <img width="20" height="20" border="0" id="#{x.torrent_id}"
+            src="/images/button_#{button_for_status(x.torrent_id)}.png"/></a>
+
         <a href="torrent/show/#{x.torrent_id}">#{x.name}</a></th>
     <th>#{convert_bytes(x.size)}</th>
     <th>#{convert_bytes(x.downloaded)}</th>
