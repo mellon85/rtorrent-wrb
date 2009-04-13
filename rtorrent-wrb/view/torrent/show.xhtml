@@ -1,5 +1,21 @@
 <h3>#{@title}</h3>
 
+<script language="javascript">
+function priority_up(id,p,i) {
+    $.get("/torrent/priority_up/"+id+"/"+p+"/"+i,{}
+        ,function(d) {
+            $("#prio"+i).text(d);
+        },"text");
+}
+
+function priority_down(id,p,i) {
+    $.get("/torrent/priority_down/"+id+"/"+p+"/"+i,{}
+        ,function(d) {
+            $("#prio"+i).text(d);
+        },"text");
+}
+</script>
+
 <!-- torrents -->
 <?r if @current_torrent != nil then ?>
 <div id="torrent">
@@ -18,12 +34,12 @@
       <th align="left">#{x[:name]}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
       <th align="right">#{convert_bytes(x.downloaded)}</th>
-      <th>#{print_priority(x.priority)}</th>
+      <th><div id="prio#{i}">#{print_priority(x.priority)}</div></th>
       <th>
-          <a href="/torrent/priority_up/#{@current_torrent[:torrent_id]}/#{x.priority}/#{i}">+</a>
+<a onclick="priority_up('#{@current_torrent[:torrent_id]}',#{x.priority},#{i})">+</a>
       </th>
       <th>
-          <a href="/torrent/priority_down/#{@current_torrent[:torrent_id]}/#{x.priority}/#{i}">-</a>
+<a onclick="priority_down('#{@current_torrent[:torrent_id]}',#{x.priority},#{i})">-</a>
       </th></tr>
   <?r i+=1 ?>
   <?r end ?>

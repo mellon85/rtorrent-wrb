@@ -2,9 +2,9 @@ class TorrentController < Controller
   helper :cache
   helper :auth
   helper :sha1
-  helper :partial
 
   before(:index)             { login_required }
+  before(:auth)              { login_required }
   before(:completed)         { login_required }
   before(:seeding)           { login_required }
   before(:downloading)       { login_required }
@@ -19,7 +19,12 @@ class TorrentController < Controller
   before(:priority_up)       { login_required }
   before(:priority_down)     { login_required }
   before(:button_for_status) { login_required }
+  before(:print_priority)    { login_required }
   
+  layout '/nolayout' => [ :button_for_status,
+                          :priority_up,
+                          :priority_down]
+
   def all
       redirect '/torrent'
   end
@@ -102,28 +107,27 @@ class TorrentController < Controller
 
   def priority_up(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      if current_priority == "2" then
-          redirect "/torrent/show/#{id}"
-          return
+      p = Torrent[id].torrentfiles[fnum.to_i].priority.to_i
+      if p < 2 then
+          p += 1
+          sock.call("f.set_priority",id,fnum.to_i,p)
+          action_cache.delete "/torrent/show/#{id}"
+          update_files(id)
       end
-      p = current_priority.to_i + 1
-      sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.delete "/torrent/show/#{id}"
-      update_files(id)
-      redirect "/torrent/show/#{id}"
+      return print_priority(p)
   end
 
   def priority_down(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      if current_priority == "0" then
-          redirect "/torrent/show/#{id}"
-          return
+      p = current_priority.to_i 
+      p = Torrent[id].torrentfiles[fnum.to_i].priority
+      if p > 0 then
+          p -= 1
+          sock.call("f.set_priority",id,fnum.to_i,p)
+          action_cache.delete "/torrent/show/#{id}"
+          update_files(id)
       end
-      p = current_priority.to_i - 1
-      sock.call("f.set_priority",id,fnum.to_i,p)
-      action_cache.delete "/torrent/show/#{id}"
-      update_files(id)
-      redirect "/torrent/show/#{id}"
+      return print_priority(p)
   end
 
   def logout
@@ -168,7 +172,6 @@ class TorrentController < Controller
       end
   end
 
-  layout '/nolayout' => [ :button_for_status ]
   def button_for_status(id)
       x = Torrent[id]
       if x.active != 1 then
@@ -208,18 +211,6 @@ class TorrentController < Controller
       return sprintf('%.02f', ratio/1000.0)
   end
 
-  def print_priority(p)
-      case p
-      when 0
-          return "Off"
-      when 1
-          return "Normal"
-      when 2
-          return "High"
-      end
-  end
-
-    
 
   def login_required
     flash[:error] = 'login required to view that page' unless logged_in?
@@ -237,6 +228,17 @@ class TorrentController < Controller
     end
   end
   
+  def print_priority(p)
+      case p
+      when 0
+          return "Off"
+      when 1
+          return "Normal"
+      when 2
+          return "High"
+      end
+  end
+
   cache :index, :ttl => $conf[:update_time]
-  cache :show, :ttl => $conf[:update_time]
+  cache :show, :ttl  => $conf[:update_time]
 end
