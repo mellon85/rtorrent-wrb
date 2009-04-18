@@ -2,6 +2,22 @@
 
 <h1>Torrent List: #{@view_name}</h1>
 
+<script language="javascript">
+function priority_up(id,p) {
+    $.get("/torrent/torrent_priority_up/"+id+"/"+p,{}
+        ,function(d) {
+            $("#prio"+id).text(d);
+        },"text");
+}
+
+function priority_down(id,p,i) {
+    $.get("/torrent/torrent_priority_down/"+id+"/"+p,{}
+        ,function(d) {
+            $("#prio"+id).text(d);
+        },"text");
+}
+</script>
+
 <p><div id="tabs">
     <a href="#{Rs(:index)}">All</a>
     <a href="#{Rs(:completed)}">Completed</a>
@@ -42,7 +58,15 @@ function change_status(id) {
     <th>#{convert_bytes(x.uploaded)}</th>
     <th>#{convert_bytes(x.down)}</th>
     <th>#{convert_bytes(x.up)}</th>
-    <th>#{print_ratio(x.ratio)}</th> </tr>
+    <th>#{print_ratio(x.ratio)}</th>
+    <th><div id="prio#{x.torrent_id}">#{print_torrent_priority(x.priority)}</div></th>
+    <th>
+<a onclick="priority_up('#{x.torrent_id}',#{x.priority})">+</a>
+      </th>
+      <th>
+<a onclick="priority_down('#{x.torrent_id}',#{x.priority})">-</a>
+      </th>
+</tr>
 <?r end ?>
 </table>
 <?r end ?>

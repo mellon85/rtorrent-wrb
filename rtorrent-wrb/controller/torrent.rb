@@ -24,7 +24,9 @@ class TorrentController < Controller
   
   layout '/nolayout' => [ :button_for_status,
                           :priority_up,
-                          :priority_down]
+                          :priority_down,
+                          :torrent_priority_up,
+                          :torrent_priority_down]
 
   def all
       redirect '/torrent'
@@ -129,6 +131,28 @@ class TorrentController < Controller
           update_files(id)
       end
       return print_priority(p)
+  end
+
+  def torrent_priority_up(id=nil,current_priority=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      p = Torrent[id].priority.to_i
+      if p < 3 then
+          p += 1
+          sock.call("d.set_priority",id,p);
+          action_cache.delete "/torrent/index"
+      end
+      return print_torrent_priority(p)
+  end
+
+  def torrent_priority_down(id=nil,current_priority=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      p = Torrent[id].priority.to_i
+      if p > 0 then
+          p -= 1
+          sock.call("d.set_priority",id,p);
+          action_cache.delete "/torrent/index"
+      end
+      return print_torrent_priority(p)
   end
 
   def logout
@@ -236,6 +260,19 @@ class TorrentController < Controller
       when 1
           return "Normal"
       when 2
+          return "High"
+      end
+  end
+
+  def print_torrent_priority(p)
+      case p
+      when 0
+          return "Off"
+      when 1
+          return "Low"
+      when 2
+          return "Normal"
+      when 3
           return "High"
       end
   end
