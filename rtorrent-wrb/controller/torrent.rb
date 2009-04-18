@@ -20,6 +20,7 @@ class TorrentController < Controller
   before(:priority_down)     { login_required }
   before(:button_for_status) { login_required }
   before(:print_priority)    { login_required }
+  before_all { version }
   
   layout '/nolayout' => [ :button_for_status,
                           :priority_up,
@@ -239,6 +240,15 @@ class TorrentController < Controller
       end
   end
 
+  def version
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      @pid = sock.call("system.pid")
+      @version = sock.call("system.client_version");
+      @library = sock.call("system.library_version");
+      return
+  end
+
+  cache :version, :ttl => 3600
   cache :index, :ttl => $conf[:update_time]
   cache :show, :ttl  => $conf[:update_time]
 end
