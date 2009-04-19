@@ -133,24 +133,26 @@ class TorrentController < Controller
       return print_priority(p)
   end
 
-  def torrent_priority_up(id=nil,current_priority=nil)
+  def torrent_priority_up(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       p = Torrent[id].priority.to_i
       if p < 3 then
           p += 1
           sock.call("d.set_priority",id,p);
           action_cache.delete "/torrent/index"
+          Torrent[id].update(:priority => p)
       end
       return print_torrent_priority(p)
   end
 
-  def torrent_priority_down(id=nil,current_priority=nil)
+  def torrent_priority_down(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       p = Torrent[id].priority.to_i
       if p > 0 then
           p -= 1
           sock.call("d.set_priority",id,p);
           action_cache.delete "/torrent/index"
+          Torrent[id].update(:priority => p)
       end
       return print_torrent_priority(p)
   end

@@ -3,15 +3,15 @@
 <h1>Torrent List: #{@view_name}</h1>
 
 <script language="javascript">
-function priority_up(id,p) {
-    $.get("/torrent/torrent_priority_up/"+id+"/"+p,{}
+function priority_up(id) {
+    $.get("/torrent/torrent_priority_up/"+id,{}
         ,function(d) {
             $("#prio"+id).text(d);
         },"text");
 }
 
-function priority_down(id,p,i) {
-    $.get("/torrent/torrent_priority_down/"+id+"/"+p,{}
+function priority_down(id) {
+    $.get("/torrent/torrent_priority_down/"+id,{}
         ,function(d) {
             $("#prio"+id).text(d);
         },"text");
@@ -61,10 +61,10 @@ function change_status(id) {
     <th>#{print_ratio(x.ratio)}</th>
     <th><div id="prio#{x.torrent_id}">#{print_torrent_priority(x.priority)}</div></th>
     <th>
-<a onclick="priority_up('#{x.torrent_id}',#{x.priority})">+</a>
+<a onclick="priority_up('#{x.torrent_id}')">+</a>
       </th>
       <th>
-<a onclick="priority_down('#{x.torrent_id}',#{x.priority})">-</a>
+<a onclick="priority_down('#{x.torrent_id}')">-</a>
       </th>
 </tr>
 <?r end ?>
