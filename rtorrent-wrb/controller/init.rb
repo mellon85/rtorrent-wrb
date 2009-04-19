@@ -125,13 +125,19 @@ class Controller < Ramaze::Controller
   end
 end
 
-# load program configuration
-$conf = YAML.load_file("#{ENV['HOME']}/.rtorrent-wrb.conf")
+CONF_FILE="#{ENV['HOME']}/.rtorrent-wrb.conf"
 
 def save_conf_to_file()
-    f = File.open("rtorrent-wrb.conf","w")
+    f = File.open(CONF_FILE,"w")
     f.write(YAML.dump($conf))
     f.close
+end
+
+# load program configuration
+begin
+    $conf = YAML.load_file(CONF_FILE)
+rescue
+    save_conf_to_file()
 end
 
 # Here go your requires for subclasses of Controller:
