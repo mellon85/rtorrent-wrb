@@ -1,6 +1,11 @@
 <h3>#{@title}</h3>
 
 <script language="javascript">
+
+$(document).ready( function () {
+$('#tracker_pane').hide();
+})
+
 function priority_up(id,p,i) {
     $.get("/torrent/priority_up/"+id+"/"+p+"/"+i,{}
         ,function(d) {
@@ -53,12 +58,14 @@ function priority_down(id,p,i) {
 </form>
 </div>
 <div id="trackers">
-<p><b>Trackers:</b><br>
+<p><b onclick="$('#tracker_pane').toggle('slow')">Trackers</b><br>
+<div id="tracker_pane">
 <?r @current_torrent.trackers.each do |x| ?>
-<?r if !(x.url =~ /dht\:/) then ?>
+    <?r if !(x.url =~ /dht\:/) then ?>
     #{x.url}<br>
     <?r end ?>
 <?r end ?>
+</div>
 </p></div>
 
 <!-- Error -->
