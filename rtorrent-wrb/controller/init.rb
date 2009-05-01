@@ -10,7 +10,7 @@ $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
 
 class Controller < Ramaze::Controller
   layout '/page'
-  helper :xhtml
+#  helper :xhtml
   engine :Ezamar
 
   protected

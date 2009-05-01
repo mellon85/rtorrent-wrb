@@ -9,4 +9,4 @@ $LOAD_PATH.unshift(__DIR__)
 require 'controller/init'
 require 'model/init'
 
-Ramaze.start :adapter => :webrick, :port => $conf[:port]
+Ramaze.start :adapter => :mongrel, :port => $conf[:port]

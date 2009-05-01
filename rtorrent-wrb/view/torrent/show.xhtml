@@ -3,7 +3,12 @@
 <script language="javascript">
 
 $(document).ready( function () {
-$('#tracker_pane').hide();
+    $('#tracker_pane').hide();
+    var color = $('#trackers').css('background-color');
+    $('#trackers').moueover(function() {
+            $('#trackers').
+        }).mouseout(function() {
+    })
 })
 
 function priority_up(id,p,i) {
@@ -58,7 +63,7 @@ function priority_down(id,p,i) {
 </form>
 </div>
 <div id="trackers">
-<p><b onclick="$('#tracker_pane').toggle('slow')">Trackers</b><br>
+    <p><b onclick="$('#tracker_pane').toggle('slow')"> Trackers</b><br>
 <div id="tracker_pane">
 <?r @current_torrent.trackers.each do |x| ?>
     <?r if !(x.url =~ /dht\:/) then ?>

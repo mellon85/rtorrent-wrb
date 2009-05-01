@@ -8,8 +8,8 @@ class Torrent < Sequel::Model
     one_to_many     :torrentfiles
     one_to_many     :trackers
 
-    plugin :cascading, :destroy => :torrentfiles
-    plugin :cascading, :destroy => :trackers
+#    plugin :cascading, :destroy => :torrentfiles
+#    plugin :cascading, :destroy => :trackers
 end
 
 class Torrentfile < Sequel::Model

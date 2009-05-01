@@ -1,7 +1,7 @@
 class TorrentController < Controller
   helper :cache
   helper :auth
-  helper :sha1
+#  helper :sha1
 
   before(:index)             { login_required }
   before(:auth)              { login_required }
@@ -27,6 +27,10 @@ class TorrentController < Controller
                           :priority_down,
                           :torrent_priority_up,
                           :torrent_priority_down]
+require 'digest/sha1'
+            def sha1(text)
+                Digest::SHA1.hexdigest(text)
+            end
 
   def all
       redirect '/torrent'
