@@ -74,6 +74,16 @@ require 'digest/sha1'
           update_torrent(id)
           @current_torrent = Torrent[id]
           @title = @current_torrent.name
+          @peers = show_peers(id)
+      end
+  end
+
+  def show_peers(id=nil)
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      npeers = sock.call("d.get_peers_connected",id)
+      @peers = []
+      (0..npeers-1).each do |p|
+          peers << sock.multicall(["p.get_address",id,p],["d.get_down_rate",id,p],["d.get_up_rate",id,p],["d.get_down_total",id,p],["d.get_up_total",id,p],["d.get_completed_percent",id,p])
       end
   end
 

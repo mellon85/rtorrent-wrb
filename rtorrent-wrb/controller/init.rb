@@ -1,5 +1,6 @@
 # Define a subclass of Ramaze::Controller holding your defaults for all
 # controllers
+#
 
 $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :username        => "",

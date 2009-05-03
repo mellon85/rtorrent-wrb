@@ -67,6 +67,19 @@ function priority_down(id,p,i) {
 </div>
 </p></div>
 
+<div id="peers">
+<?r @peers.each |x| do ?>
+<table border="0" valign="middle">
+    <tr><th>Peer</th><th>Downloading</th><th>Uploading</th>
+        <th>Downloaded</th>
+        <th>Uploaded</th><th>Peer completed</th>
+    </tr>
+    <tr><th>x[0]</th><th>x[1]</th><th>x[2]</th><th>x[3]</th>
+        <th>x[4]</th><th>x[5]</th>
+    </tr>
+<?r end ?>
+</div>
+
 <!-- Error -->
 <?r else ?>
 <div id="error">
