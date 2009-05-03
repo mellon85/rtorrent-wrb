@@ -52,7 +52,7 @@ function change_status(id) {
         <img width="20" height="20" border="0" id="#{x.torrent_id}"
             src="/images/button_#{button_for_status(x.torrent_id)}.png"/></a>
 
-        <a href="torrent/show/#{x.torrent_id}">#{x.name}</a></th>
+        <a href="/torrent/show/#{x.torrent_id}">#{x.name}</a></th>
     <th>#{convert_bytes(x.size)}</th>
     <th>#{convert_bytes(x.downloaded)}</th>
     <th>#{convert_bytes(x.uploaded)}</th>
