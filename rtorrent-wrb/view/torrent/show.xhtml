@@ -1,15 +1,9 @@
 <h3>#{@title}</h3>
 
 <script language="javascript">
-
-$(document).ready( function () {
-    $('#tracker_pane').hide();
-    var color = $('#trackers').css('background-color');
-    $('#trackers').moueover(function() {
-            $('#trackers').
-        }).mouseout(function() {
-    })
-})
+$(function(){
+    $('#trackerpane').hide('fast');
+});
 
 function priority_up(id,p,i) {
     $.get("/torrent/priority_up/"+id+"/"+p+"/"+i,{}
@@ -63,8 +57,8 @@ function priority_down(id,p,i) {
 </form>
 </div>
 <div id="trackers">
-    <p><b onclick="$('#tracker_pane').toggle('slow')"> Trackers</b><br>
-<div id="tracker_pane">
+    <p><b onclick="$('#trackerpane').toggle('slow')"> Trackers</b><br>
+<div id="trackerpane">
 <?r @current_torrent.trackers.each do |x| ?>
     <?r if !(x.url =~ /dht\:/) then ?>
     #{x.url}<br>
