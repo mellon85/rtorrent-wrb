@@ -80,9 +80,8 @@ require 'digest/sha1'
 
   def show_peers(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      npeers = sock.call("d.get_peers_connected",id)
       @peers = []
-      @peers << sock.call("p.multicall",id,"","p.get_address=","p.get_down_rate=","p.get_up_rate=","p.get_down_total=","p.get_up_total=","p.get_completed_percent=")
+      @peers = sock.call("p.multicall",id,"","p.get_address=","p.get_down_rate=","p.get_up_rate=","p.get_down_total=","p.get_up_total=","p.get_completed_percent=")
   end
 
   def togglePause(id=nil)
