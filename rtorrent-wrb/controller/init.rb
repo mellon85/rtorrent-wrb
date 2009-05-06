@@ -3,8 +3,8 @@
 #
 
 $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
-         :username        => "",
-         :passwordSHA1    => "",
+         :username        => "admin",
+         :passwordSHA1    => "d033e22ae348aeb5660fc2140aec35850c4da997",
          :update_time     => 60,
          :port            => 7000,
          :torrent_save_path => "/tmp"}
