@@ -5,6 +5,10 @@ $(function(){
     $('#trackerpane').hide('fast');
 });
 
+$(function(){
+    $('#peerspane').hide('fast');
+});
+
 function priority_up(id,p,i) {
     $.get("/torrent/priority_up/"+id+"/"+p+"/"+i,{}
         ,function(d) {
@@ -68,8 +72,9 @@ function priority_down(id,p,i) {
 </p></div>
 
 
-<p><b>Peers</b></p>
 <div id="peers">
+    <p><b onclick="$('#peerspane').toggle('slow')"> Peers</b><br>
+<div id="peerspane">
 <table border="0" valign="middle">
     <tr><th>Peer</th><th>Downloading</th><th>Uploading</th>
         <th>Downloaded</th>
@@ -81,6 +86,7 @@ function priority_down(id,p,i) {
     </tr>
 <?r end ?>
 </table>
+</div>
 </div>
 
 <!-- Error -->
