@@ -22,8 +22,8 @@ class Controller < Ramaze::Controller
         torrent = Torrent[id] 
         fnum, chsize = sock.multicall(["d.get_size_files",id], ["d.get_chunk_size",id])
         tmpTorrents = []
-        tmpTorrents = sock.call("f.multicall",id,"","f.get_path","f.get_size_bytes",
-                                "f.get_size_chunks","f.get_completed_chunks","f.get_priority")
+        tmpTorrents = sock.call("f.multicall",id,"","f.get_path=","f.get_size_bytes=",
+                                "f.get_size_chunks=","f.get_completed_chunks=","f.get_priority=")
         if torrent.torrentfiles.length == 0 then
             #(0..fnum-1).each do |i|
             tmpTorrents.each do |t|
