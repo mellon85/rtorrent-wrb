@@ -21,25 +21,38 @@ class Controller < Ramaze::Controller
     DB.transaction do
         torrent = Torrent[id] 
         fnum, chsize = sock.multicall(["d.get_size_files",id], ["d.get_chunk_size",id])
+        tmpTorrents = []
+        tmpTorrents = sock.call("f.multicall",id,"","f.get_path","f.get_size_bytes",
+                                "f.get_size_chunks","f.get_completed_chunks","f.get_priority")
         if torrent.torrentfiles.length == 0 then
-            (0..fnum-1).each do |i|
+            #(0..fnum-1).each do |i|
+            tmpTorrents.each do |t|
                 f = Torrentfile.new
-                f.name, f.size, chnum, chdone, f.priority = 
-                    sock.multicall(["f.get_path",id,i],["f.get_size_bytes",id,i],
-                                         ["f.get_size_chunks",id,i],
-                                         ["f.get_completed_chunks",id,i],
-                                         ["f.get_priority",id,i])
+                f.name = t[0]
+                f.size = t[1]
+                chnum = t[2]
+                chdone = t[3]
+                f.priority = t[4]
+                    #sock.multicall(["f.get_path",id,i],["f.get_size_bytes",id,i],
+                    #                     ["f.get_size_chunks",id,i],
+                    #                     ["f.get_completed_chunks",id,i],
+                    #                     ["f.get_priority",id,i])
                 f.downloaded = f.size
                 f.downloaded = chdone*chsize if chdone*chsize < f.size 
                 torrent.add_torrentfile(f)
             end
         else
-            (0..fnum-1).each do |i|
-                name, size, chnum, chdone, priority =
-                    sock.multicall(["f.get_path",id,i], ["f.get_size_bytes",id,i],
-                                   ["f.get_size_chunks",id,i],
-                                   ["f.get_completed_chunks",id,i],
-                                   ["f.get_priority",id,i])
+            #(0..fnum-1).each do |i|
+            tmpTorrents.each do |t|
+                name = t[0]
+                size = t[1]
+                chnum = t[2]
+                chdone = t[3]
+                priority = t[4]
+                    #sock.multicall(["f.get_path",id,i], ["f.get_size_bytes",id,i],
+                    #               ["f.get_size_chunks",id,i],
+                    #               ["f.get_completed_chunks",id,i],
+                    #               ["f.get_priority",id,i])
                 done = size
                 done = chdone*chsize if chdone*chsize < size
                 Torrentfile.filter(:torrent_id => id).filter(:name => name).update(
@@ -51,13 +64,14 @@ class Controller < Ramaze::Controller
 
   def update_trackers(id)
     sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+    tmpTrackers = []
+    tmpTrackers = sock.call("t.multicall",id,"t.get_url=")
     DB.transaction do
         torrent = Torrent[id] 
         if torrent.torrentfiles.length == 0 then
-            num    = sock.call("d.get_tracker_size",id)
-            (0..num-1).each do |i|
+            tmpTrackers.each do |t|
                 tracker = Tracker.new
-                tracker.url = sock.call("t.get_url",id,i)
+                tracker.url = t[0]
                 torrent = Torrent[id]
                 torrent.add_tracker(tracker)
             end
@@ -76,7 +90,16 @@ class Controller < Ramaze::Controller
       DB.transaction do
       Torrent.update(:updated => '0')
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      tlist = sock.call("download_list", "main")
+      tlist = []
+      #tlist = sock.call("download_list", "main")
+      tlist = sock.call("d.multicall","","d.get_name=","d.get_size_bytes","d.get_completed_bytes",
+                           "d.get_up_rate=","d.get_down_rate=",
+                           "d.get_size_files=",
+                           "d.get_tracker_size=",
+                           "d.get_chunk_size=","d.get_size_chunks=",
+                           "d.get_completed_chunks=","d.get_ratio=",
+                           "d.is_active=","d.get_complete=",
+                           "d.get_priority=")
       tlist.each do |x|
           name, size, downloaded, up, down, fnum, tracknum,
               chsize, chnum, chcmp, ratio, active, done, prio =
