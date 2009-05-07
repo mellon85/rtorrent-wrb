@@ -1,6 +1,7 @@
 # Define a subclass of Ramaze::Controller holding your defaults for all
 # controllers
 #
+require 'pp'
 
 $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :username        => "admin",
@@ -65,7 +66,7 @@ class Controller < Ramaze::Controller
   def update_trackers(id)
     sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
     tmpTrackers = []
-    tmpTrackers = sock.call("t.multicall",id,"t.get_url=")
+    tmpTrackers = sock.call("t.multicall",id,"","t.get_url=")
     DB.transaction do
         torrent = Torrent[id] 
         if torrent.torrentfiles.length == 0 then
