@@ -99,8 +99,8 @@ class Controller < Ramaze::Controller
                            "d.get_chunk_size=","d.get_size_chunks=",
                            "d.get_completed_chunks=","d.get_ratio=",
                            "d.is_active=","d.get_complete=",
-                           "d.get_priority=")
-      tlist.each do |x|
+                           "d.get_priority=","d.get_hash")
+      tlist.each do |t|
           name = t[0]
           size = t[1]
           downloaded = t[2]
@@ -115,6 +115,7 @@ class Controller < Ramaze::Controller
           active = t[11]
           done = t[12]
           prio = t[13]
+          id = t[14]
             #sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
             #               ["d.get_completed_bytes",x],
             #               ["d.get_up_rate",x],["d.get_down_rate",x],
@@ -128,11 +129,11 @@ class Controller < Ramaze::Controller
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
           uploaded = downloaded*ratio/1000.0
 
-          torrent = Torrent[x]
+          torrent = Torrent[id]
           if torrent == nil then
             # Create new Torrent
             torrent = Torrent.new
-            torrent.torrent_id = "#{x}"
+            torrent.torrent_id = "#{id}"
             torrent.name = "#{name}"
             torrent.size = size 
             torrent.uploaded = uploaded
