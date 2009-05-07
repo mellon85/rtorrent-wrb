@@ -92,7 +92,7 @@ class Controller < Ramaze::Controller
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       tlist = []
       #tlist = sock.call("download_list", "main")
-      tlist = sock.call("d.multicall","","d.get_name=","d.get_size_bytes","d.get_completed_bytes",
+      tlist = sock.call("d.multicall","","d.get_name=","d.get_size_bytes=","d.get_completed_bytes=",
                            "d.get_up_rate=","d.get_down_rate=",
                            "d.get_size_files=",
                            "d.get_tracker_size=",
