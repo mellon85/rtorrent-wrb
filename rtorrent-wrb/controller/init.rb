@@ -1,7 +1,6 @@
 # Define a subclass of Ramaze::Controller holding your defaults for all
 # controllers
 #
-require 'pp'
 
 $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :username        => "admin",
@@ -26,7 +25,6 @@ class Controller < Ramaze::Controller
         tmpTorrents = sock.call("f.multicall",id,"","f.get_path=","f.get_size_bytes=",
                                 "f.get_size_chunks=","f.get_completed_chunks=","f.get_priority=")
         if torrent.torrentfiles.length == 0 then
-            #(0..fnum-1).each do |i|
             tmpTorrents.each do |t|
                 f = Torrentfile.new
                 f.name = t[0]
@@ -34,26 +32,17 @@ class Controller < Ramaze::Controller
                 chnum = t[2]
                 chdone = t[3]
                 f.priority = t[4]
-                    #sock.multicall(["f.get_path",id,i],["f.get_size_bytes",id,i],
-                    #                     ["f.get_size_chunks",id,i],
-                    #                     ["f.get_completed_chunks",id,i],
-                    #                     ["f.get_priority",id,i])
                 f.downloaded = f.size
                 f.downloaded = chdone*chsize if chdone*chsize < f.size 
                 torrent.add_torrentfile(f)
             end
         else
-            #(0..fnum-1).each do |i|
             tmpTorrents.each do |t|
                 name = t[0]
                 size = t[1]
                 chnum = t[2]
                 chdone = t[3]
                 priority = t[4]
-                    #sock.multicall(["f.get_path",id,i], ["f.get_size_bytes",id,i],
-                    #               ["f.get_size_chunks",id,i],
-                    #               ["f.get_completed_chunks",id,i],
-                    #               ["f.get_priority",id,i])
                 done = size
                 done = chdone*chsize if chdone*chsize < size
                 Torrentfile.filter(:torrent_id => id).filter(:name => name).update(
