@@ -48,6 +48,8 @@ function change_status(id) {
 
 <?r @torrents.each do |x| ?>
 <tr><th align="left">
+    <a href="/torrent/remove/#{x.torrent_id}"><img src="/images/button_error.png" width="20"
+        height="20" border="0"/><a/>
     <a onclick='change_status(\"#{x.torrent_id}\")'>
         <img width="20" height="20" border="0" id="#{x.torrent_id}"
             src="/images/button_#{button_for_status(x.torrent_id)}.png"/></a>
