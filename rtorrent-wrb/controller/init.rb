@@ -101,17 +101,29 @@ class Controller < Ramaze::Controller
                            "d.is_active=","d.get_complete=",
                            "d.get_priority=")
       tlist.each do |x|
-          name, size, downloaded, up, down, fnum, tracknum,
-              chsize, chnum, chcmp, ratio, active, done, prio =
-            sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
-                           ["d.get_completed_bytes",x],
-                           ["d.get_up_rate",x],["d.get_down_rate",x],
-                           ["d.get_size_files",x],
-                           ["d.get_tracker_size",x],
-                           ["d.get_chunk_size",x],["d.get_size_chunks",x],
-                           ["d.get_completed_chunks",x],["d.get_ratio",x],
-                           ["d.is_active",x],["d.get_complete",x],
-                           ["d.get_priority",x])
+          name = t[0]
+          size = t[1]
+          downloaded = t[2]
+          up = t[3]
+          down = t[4]
+          fnum = t[5]
+          tracknum = t[6]
+          chsize = t[7]
+          chnum = t[8]
+          chcmp = t[9]
+          ratio = t[10]
+          active = t[11]
+          done = t[12]
+          prio = t[13]
+            #sock.multicall(["d.get_name",x],["d.get_size_bytes",x],
+            #               ["d.get_completed_bytes",x],
+            #               ["d.get_up_rate",x],["d.get_down_rate",x],
+            #               ["d.get_size_files",x],
+            #               ["d.get_tracker_size",x],
+            #               ["d.get_chunk_size",x],["d.get_size_chunks",x],
+            #               ["d.get_completed_chunks",x],["d.get_ratio",x],
+            #               ["d.is_active",x],["d.get_complete",x],
+            #               ["d.get_priority",x])
           size = chsize*chnum if size < chsize*chnum
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
           uploaded = downloaded*ratio/1000.0
