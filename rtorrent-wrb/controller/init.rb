@@ -99,7 +99,7 @@ class Controller < Ramaze::Controller
                            "d.get_chunk_size=","d.get_size_chunks=",
                            "d.get_completed_chunks=","d.get_ratio=",
                            "d.is_active=","d.get_complete=",
-                           "d.get_priority=","d.get_hash")
+                           "d.get_priority=","d.get_hash=")
       tlist.each do |t|
           name = t[0]
           size = t[1]
