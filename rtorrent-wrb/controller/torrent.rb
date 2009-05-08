@@ -46,7 +46,8 @@ require 'digest/sha1'
   def completed
       update_torrents
       @title = "rTorrent: Completed Torrents"
-      @torrents = Torrent.filter(:downloaded >= :size)
+      @torrents = Torrent.all #filter(:downloaded >= :size)
+      @torrents.delete_if {|x| x.downloaded < x.size}
       @view_name = "Completed"
       render_template :index
   end
@@ -54,7 +55,8 @@ require 'digest/sha1'
   def seeding
       update_torrents
       @title = "rTorrent: Seeding"
-      @torrents = Torrent.filter(:downloaded >= :size).filter(:active => 1)
+      @torrents = Torrent.all #filter(:downloaded >= :size).filter(:active => 1)
+      @torrents.delete_if {|x| x.active == 0 && x.downloaded < x.size}
       @view_name = "Seeding"
       render_template :index
   end
@@ -62,7 +64,8 @@ require 'digest/sha1'
   def downloading
       update_torrents
       @title = "rTorrent: Downloading"
-      @torrents = Torrent.filter(:downloaded < :size)
+      @torrents = Torrent.all #filter(:downloaded < :size)
+      @torrents.delete_if {|x| x.downloaded >= x.size}
       @view_name = "Downloading"
       render_template :index
   end
