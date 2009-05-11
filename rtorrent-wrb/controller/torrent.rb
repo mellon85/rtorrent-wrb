@@ -1,7 +1,6 @@
 class TorrentController < Controller
   helper :cache
   helper :auth
-#  helper :sha1
 
   before(:index)             { login_required }
   before(:auth)              { login_required }
