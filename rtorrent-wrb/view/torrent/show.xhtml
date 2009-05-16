@@ -1,9 +1,12 @@
 <h3>#{@title}</h3>
 
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
 <script language="javascript">
 $(function(){
     $('#trackerpane').hide();
     $('#peerspane').hide();
+    $('#removeBox').hide();
 });
 
 function priority_up(id,p,i) {
@@ -26,8 +29,15 @@ function priority_down(id,p,i) {
 <div id="torrent">
     Torrent hash: #{@current_torrent[:torrent_id]}
 </div>
+<div id="removeBox">
+Do you really want to remove this torrent?<br>
+<center>
+    <a href="/torrent/remove/#{@current_torrent[:torrent_id]}">Remove</a>
+</center>
+</div>
+<a onclick="$('#removeBox').jOverlay({color:'red', opacity: 0.6});">Remove</a>
 <div id="files">
-<a href="/torrent/remove/#{@current_torrent[:torrent_id]}">Remove</a>
+
 <table border="0">
 <form action="#{Rs(:set_priority)}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="torrentID" value="#{@current_torrent.torrent_id}" />
