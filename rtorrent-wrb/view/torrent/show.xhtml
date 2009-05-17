@@ -29,10 +29,14 @@ function priority_down(id,p,i) {
 <div id="torrent">
     Torrent hash: #{@current_torrent[:torrent_id]}
 </div>
-<div id="removeBox">
+<div id="removeBox" style="background-color:white">
 Do you really want to remove this torrent?<br>
 <center>
-    <a href="/torrent/remove/#{@current_torrent[:torrent_id]}">Remove</a>
+    <form action="/torrent/remove/#{@current_torrent[:torrent_id]}" method="GET">
+        <div>
+            <input type="submit" value="Remove">
+        </div>
+    </form>
 </center>
 </div>
 <a onclick="$('#removeBox').jOverlay({color:'red', opacity: 0.6});">Remove</a>
