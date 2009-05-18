@@ -4,7 +4,11 @@
 
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 <script language="javascript">
+$(function(){
+    $("#torrentsTable").tablesorter();}
+); 
 function priority_up(id) {
     $.get("/torrent/torrent_priority_up/"+id,{}
         ,function(d) {
@@ -44,11 +48,13 @@ function change_status(id) {
 }
 </script>
 
-<table border="0" valign="middle">
+<table id="torrentsTable" border="0" valign="middle">
+<thead>
   <tr><th>Name</th><th>Size</th><th>Downloaded</th><th>Uploaded</th>
       <th>Download</th><th>Upload</th><th>Ratio</th><th></th><th>Priority</th><th></th>
         </tr>
-
+</thead>
+<tbody>
 <?r @torrents.each do |x| ?>
 <tr><th align="left">
     <!-- <a href="/torrent/remove/#{x.torrent_id}"><img src="/images/button_error.png" width="20"
@@ -75,6 +81,7 @@ function change_status(id) {
       </th>
 </tr>
 <?r end ?>
+</tbody>
 </table>
 <?r end ?>
 </div></p>

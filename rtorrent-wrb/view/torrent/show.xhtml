@@ -7,11 +7,14 @@
     0.6});">Remove</button>
 <script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
+<script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 <script language="javascript">
 $(function(){
     $('#trackerpane').hide();
     $('#peerspane').hide();
     $('#removeBox').hide();
+    $("#filesTable").tablesorter();
+    $("#peersTable").tablesorter();
 });
 
 function priority_up(id,p,i) {
@@ -48,10 +51,13 @@ Do you really want to remove this torrent?<br>
 <div id="files">
     <p><b onclick="$('#filespane').toggle('slow')">Files</b><br>
 <div id="filespane">
-<table border="0">
+<table id="filesTable" border="0">
 <form action="#{Rs(:set_priority)}" method="post" enctype="multipart/form-data">
   <input type="hidden" name="torrentID" value="#{@current_torrent.torrent_id}" />
+<thead>
   <tr></th><th><th>File Name</th><th>Size</th><th>Downloaded</th><th></th><th>Priority</th><th></th></tr>
+</thead>
+<tbody>
   <?r i = 0 ?>
   <?r @current_torrent.torrentfiles.each do |x| ?>
   <tr>
@@ -68,6 +74,7 @@ Do you really want to remove this torrent?<br>
       </th></tr>
   <?r i+=1 ?>
   <?r end ?>
+</tbody>
 </table>
 <input type="submit" value="Change Priority"/>
 <select name="priority">
@@ -94,18 +101,22 @@ Do you really want to remove this torrent?<br>
 <div id="peers">
     <p><b onclick="$('#peerspane').toggle('slow')">Peers</b><br>
 <div id="peerspane">
-<table border="0" valign="middle">
+<table id="peersTable" border="0" valign="middle">
+    <thead>
     <tr><th>Peer</th><th>Downloading</th><th>Uploading</th>
         <th>Downloaded</th>
         <th>Uploaded</th><th>%</th>
     </tr>
+    </thead>
+    <tbody>
 <?r @peers.each do |x| ?>
-<tr><th>#{x[0]}</th><th>#{convert_bytes(x[1])}</th>
+    <tr><th>#{x[0]}</th><th>#{convert_bytes(x[1])}</th>
     <th>#{convert_bytes(x[2])}</th>
     <th>#{convert_bytes(x[3])}</th>
     <th>#{convert_bytes(x[4])}</th><th>#{x[5]}</th>
     </tr>
 <?r end ?>
+    </tbody>
 </table>
 </div>
 </div>
