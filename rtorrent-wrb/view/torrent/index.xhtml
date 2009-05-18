@@ -2,6 +2,8 @@
 
 <h1>Torrent List: #{@view_name}</h1>
 
+<script type="text/javascript" src="/js/jquery.js"></script>
+<script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
 <script language="javascript">
 function priority_up(id) {
     $.get("/torrent/torrent_priority_up/"+id,{}
@@ -44,13 +46,15 @@ function change_status(id) {
 
 <table border="0" valign="middle">
   <tr><th>Name</th><th>Size</th><th>Downloaded</th><th>Uploaded</th>
-      <th>Download</th><th>Upload</th><th>Ratio</th><th>Priority</th>
+      <th>Download</th><th>Upload</th><th>Ratio</th><th></th><th>Priority</th><th></th>
         </tr>
 
 <?r @torrents.each do |x| ?>
 <tr><th align="left">
-    <a href="/torrent/remove/#{x.torrent_id}"><img src="/images/button_error.png" width="20"
-        height="20" border="0"/><a/>
+    <!-- <a href="/torrent/remove/#{x.torrent_id}"><img src="/images/button_error.png" width="20"
+        height="20" border="0"/><a/> -->
+    <a onclick="$('#removeBox_#{x.torrent_id}').jOverlay({color:'red', opacity:0.6});"><img src="/images/button_error.png" width="20"
+        height="20" border="0"/></a>
     <a onclick='change_status(\"#{x.torrent_id}\")'>
         <img width="20" height="20" border="0" id="#{x.torrent_id}"
             src="/images/button_#{button_for_status(x.torrent_id)}.png"/></a>
@@ -62,10 +66,10 @@ function change_status(id) {
     <th>#{convert_bytes(x.down)}</th>
     <th>#{convert_bytes(x.up)}</th>
     <th>#{print_ratio(x.ratio)}</th>
-    <th><div id="prio#{x.torrent_id}">#{print_torrent_priority(x.priority)}</div></th>
     <th>
 <a onclick="priority_up('#{x.torrent_id}')">+</a>
       </th>
+    <th><div id="prio#{x.torrent_id}">#{print_torrent_priority(x.priority)}</div></th>
       <th>
 <a onclick="priority_down('#{x.torrent_id}')">-</a>
       </th>
@@ -75,6 +79,24 @@ function change_status(id) {
 <?r end ?>
 </div></p>
 
+<?r @torrents.each do |x| ?>
+<script language="javascript">
+$(function(){
+    $('#removeBox_#{x.torrent_id}').hide();
+});
+</script>
+<div id="removeBox_#{x.torrent_id}" style="background-color:white">
+Do you really want to remove this torrent?<br>
+<center>
+    <form action="/torrent/remove/#{x.torrent_id}" method="GET">
+        <div>
+            <input type="submit" value="Yes">
+            <input type="button" onclick="$.closeOverlay()" value="No">
+        </div>
+    </form>
+</center>
+</div>
+<?r end ?>
 <p>
 <a href="#{Rs(:logout)}">logout</a>
 <a href="#{Rs(:config)}">configure</a>
