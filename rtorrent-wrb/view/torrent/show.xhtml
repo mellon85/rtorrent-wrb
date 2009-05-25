@@ -2,7 +2,7 @@
 <a href="/torrent">back</a>
 <a href="#{Rs(:logout)}">logout</a>
 </p>
-<h3>#{@title}</h3>
+<p><h3>#{@title}</h3></p><br/>
 <button onclick="$('#removeBox').jOverlay({color:'red', opacity:
     0.6});">Remove</button>
 <script type="text/javascript" src="/js/jquery.js"></script>
@@ -38,7 +38,7 @@ function priority_down(id,p,i) {
     Torrent hash: #{@current_torrent[:torrent_id]}
 </div>
 <div id="removeBox" style="background-color:white">
-Do you really want to remove this torrent?<br>
+<p style="color:black">Do you really want to remove this torrent?</p>
 <center>
     <form action="/torrent/remove/#{@current_torrent[:torrent_id]}" method="GET">
         <div>
