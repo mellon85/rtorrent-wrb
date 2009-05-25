@@ -1,0 +1,8 @@
+** Rtorrent web interface
+
+To start it install ramaze and in the folder ramaze-wrb do
+
+ramaze start
+
+Configuration files are saved in your home in .rtorrent-wrb.conf
+If it does not exists then it is created with default values.
