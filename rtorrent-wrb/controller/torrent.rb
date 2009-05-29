@@ -26,84 +26,90 @@ class TorrentController < Controller
                           :priority_down,
                           :torrent_priority_up,
                           :torrent_priority_down]
-require 'digest/sha1'
-            def sha1(text)
-                Digest::SHA1.hexdigest(text)
-            end
+  def sha1(text)
+      require 'digest/sha1'
+      Digest::SHA1.hexdigest(text)
+  end
 
   def all
       redirect '/torrent'
   end
 
   def index
-      update_torrents
       @title = "rTorrent: All Torrents"
-      @torrents = Torrent.all
+      @torrents = super.torrents.values 
       @view_name = "All"
   end
 
   def completed
-      update_torrents
       @title = "rTorrent: Completed Torrents"
-      @torrents = Torrent.all #filter(:downloaded >= :size)
+      @torrents = super.torrents.values
       @torrents.delete_if {|x| x.downloaded < x.size}
       @view_name = "Completed"
       render_template :index
   end
 
   def seeding
-      update_torrents
       @title = "rTorrent: Seeding"
-      @torrents = Torrent.all #filter(:downloaded >= :size).filter(:active => 1)
+      @torrents = super.torrents.values
       @torrents.delete_if {|x| x.active == 0 && x.downloaded < x.size}
       @view_name = "Seeding"
       render_template :index
   end
 
   def downloading
-      update_torrents
       @title = "rTorrent: Downloading"
-      @torrents = Torrent.all #filter(:downloaded < :size)
+      @torrents = super.torrents.values
       @torrents.delete_if {|x| x.downloaded >= x.size}
       @view_name = "Downloading"
       render_template :index
   end
 
   def show(id=nil)
-      if Torrent[id] == nil then
-          redirect "/torrent"
-      else
-          update_torrent(id)
-          @current_torrent = Torrent[id]
-          @title = @current_torrent.name
-          @peers = show_peers(id)
-      end
+      sem.synchronize {
+          @current_torrent = @torrents_cache[id]
+          @current_torrent = (super.torrents)[id] if @current_torrent == nil
+      }
+      redirect "/torrent" if @current_torrent == nil
+      @title = @current_torrent.name
+      @peers = show_peers(id)
   end
 
   def show_peers(id=nil)
+      if id == nil then
+          return []
+      end
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       return sock.call("p.multicall",id,"","p.get_address=","p.get_down_rate=","p.get_up_rate=","p.get_down_total=","p.get_up_total=","p.get_completed_percent=")
   end
 
   def togglePause(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      if Torrent[id].active == 0 then
+      sem.synchronize {
+          @current_torrent = @torrents_cache[id]
+          @current_torrent = (super.torrents)[id] if @current_torrent == nil
+      }
+      if @current_torrent.active == 0 then
           sock.call("d.resume",id)
           sock.call("d.try_start",id)
       else
           sock.call("d.pause",id)
       end
-      update_torrents
       action_cache.delete "/torrent/index"
   end
 
   def remove(id=nil)
-      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      #sock.call("d.delete_link",id)
-      sock.call("d.stop",id)
-      sock.call("d.erase",id)
-      action_cache.delete "/torrent/index"
-      update_torrents
+      sem.synchronize {
+          @current_torrent = @torrents_cache[id]
+          @current_torrent = (super.torrents)[id] if @current_torrent == nil
+      }
+      if @current_torrent != nil then
+          sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+          #sock.call("d.delete_link",id)
+          sock.call("d.stop",id)
+          sock.call("d.erase",id)
+          action_cache.delete "/torrent/index"
+      end
       redirect "/torrent"
   end
 
@@ -115,19 +121,17 @@ require 'digest/sha1'
               sock.call("f.set_priority",id,f.to_i,priority)
           end
           action_cache.delete "/torrent/show/#{id}"
-          update_files(id)
       end
       redirect "/torrent/show/#{id}"
   end
 
   def priority_up(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      p = Torrent[id].torrentfiles[fnum.to_i].priority.to_i
+      p = (super.files(id))[fnum.to_i].priority.to_i
       if p < 2 then
           p += 1
           sock.call("f.set_priority",id,fnum.to_i,p)
           action_cache.delete "/torrent/show/#{id}"
-          update_files(id)
       end
       return print_priority(p)
   end
@@ -135,7 +139,7 @@ require 'digest/sha1'
   def priority_down(id=nil,current_priority=nil,fnum=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       p = current_priority.to_i 
-      p = Torrent[id].torrentfiles[fnum.to_i].priority
+      p = (super.files(id))[fnum.to_i].priority
       if p > 0 then
           p -= 1
           sock.call("f.set_priority",id,fnum.to_i,p)
@@ -147,16 +151,23 @@ require 'digest/sha1'
 
   def torrent_priority_up(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      p = Torrent[id].priority.to_i
+      sem.synchronize {
+          @current_torrent = @torrents_cache[id]
+          @current_torrent = (super.torrents)[id] if @current_torrent == nil
+      }
+      p = @current_torrent.priority.to_i
       if p < 3 then
           p += 1
           sock.call("d.set_priority",id,p);
           action_cache.delete "/torrent/index"
-          Torrent[id].update(:priority => p)
+          sem.synchronize {
+              @torrents_cache[id].priority = p
+          }
       end
       return print_torrent_priority(p)
   end
 
+  #TODO
   def torrent_priority_down(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       p = Torrent[id].priority.to_i
