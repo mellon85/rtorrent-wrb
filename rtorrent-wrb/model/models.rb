@@ -1,21 +1,39 @@
 # Here goes your database connection and options:
 
-require 'rubygems'
-require 'sequel'
+class Torrent
+    attr_accessor :name, :size, :downloaded, :uploaded, :up
+    attr_accessor :down, :ratio, :active, :priority, :torrent_id
 
-class Torrent < Sequel::Model
-    set_primary_key :torrent_id
-    one_to_many     :torrentfiles
-    one_to_many     :trackers
-
-    before_destroy { torrentfiles_dataset.destroy }
-    before_destroy { trackers_dataset.destroy }
+    def initialize(name, size, downloaded, uploaded, up, down, ratio,
+                   active, priority, torrent_id)
+        @name = name
+        @size = size
+        @downloaded = downloaded
+        @uploaded = uploaded
+        @up = up
+        @down = down
+        @ratio = ratio
+        @active = active
+        @priority = priority
+        @torrent_id = torrent_id
+    end
 end
 
-class Torrentfile < Sequel::Model
-    no_primary_key
+class TorrentFile
+    attr_accessor :name, :size, :downloaded, :priority
+
+    def initialize(name,size,downloaded,priority)
+        @name = name
+        @size = size
+        @downloaded = downloaded
+        @priority = priority
+    end
 end
 
-class Tracker < Sequel::Model
-    no_primary_key
+class Tracker
+    attr_accessor :url
+
+    def initialize(url)
+        @url = url
+    end
 end
