@@ -9,6 +9,9 @@ $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :port            => 7000,
          :torrent_save_path => "/tmp"}
 
+require 'thread'
+$sem = Mutex.new
+
 class Controller < Ramaze::Controller
   layout '/page'
 #  helper :xhtml
@@ -72,7 +75,9 @@ class Controller < Ramaze::Controller
                                 t[10],t[11],t[13],t[14])
           torrents[id] = torrent
       end
-      @torrents_cache = torrents
+      sem.synchronize {
+          $torrents_cache = torrents
+      }
       return torrents
   end
 end
