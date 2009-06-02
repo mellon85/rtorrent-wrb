@@ -1,13 +1,13 @@
 require 'rubygems'
 require 'SCGIxml'
 
-SOCKET="/tmp/rtorrent.sock"
+SOCKET="/tmp/rtorrent.socket"
 
 if ! ARGV.empty?
   then
     rtorrent = SCGIXMLClient.new([SOCKET,"/RPC2"])
-    puts rtorrent.call("system.methodSignature","#{ARGV.first}")
-    puts rtorrent.call("system.methodHelp","#{ARGV.first}")
+    puts "signature: #{rtorrent.call("system.methodSignature","#{ARGV.first}")}"
+    puts "help: #{rtorrent.call("system.methodHelp","#{ARGV.first}")}"
   else
-    puts "AH AH AH"
+    puts "Missing arguments"
 end
