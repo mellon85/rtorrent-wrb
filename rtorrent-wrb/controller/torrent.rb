@@ -66,19 +66,16 @@ class TorrentController < Controller
   end
 
   def show(id=nil)
-      sem.synchronize {
-          @current_torrent = @torrents_cache[id]
-          @current_torrent = (super.torrents)[id] if @current_torrent == nil
-      }
-      redirect "/torrent" if @current_torrent == nil
-      @title = @current_torrent.name
-      @peers = show_peers(id)
+      begin
+          @peers = show_peers(id)
+          # obtain name from rtorrent given the id
+          @title = @current_torrent.name
+      rescue Exception => e
+          redirect '/torrent'
+      end
   end
 
   def show_peers(id=nil)
-      if id == nil then
-          return []
-      end
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       return sock.call("p.multicall",id,"","p.get_address=","p.get_down_rate=","p.get_up_rate=","p.get_down_total=","p.get_up_total=","p.get_completed_percent=")
   end

@@ -9,9 +9,6 @@ $conf = {:rtorrent_socket => "/tmp/rtorrent.sock",
          :port            => 7000,
          :torrent_save_path => "/tmp"}
 
-require 'thread'
-$sem = Mutex.new
-
 class Controller < Ramaze::Controller
   layout '/page'
 #  helper :xhtml
@@ -50,7 +47,7 @@ class Controller < Ramaze::Controller
   def torrents
       torrents = {}
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      ids = @torrents.keys
+      ids = torrents.keys
       tlist = sock.call("d.multicall","","d.get_name=","d.get_size_bytes=",
                            "d.get_completed_bytes=",
                            "d.get_up_rate=","d.get_down_rate=",
@@ -75,9 +72,6 @@ class Controller < Ramaze::Controller
                                 t[10],t[11],t[13],t[14])
           torrents[id] = torrent
       end
-      sem.synchronize {
-          $torrents_cache = torrents
-      }
       return torrents
   end
 end
