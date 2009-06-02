@@ -1,6 +1,5 @@
 To use this software you need at least there gems
 This software is currently supported to run on Debian Lenny
 
-Ramaze (tested on pre-2)
-Sequel (tested on 1.5)
-
+ramaze (tested on pre-2)
+xmlrpcs (at least 0.1.3)
