@@ -6,3 +6,12 @@ ramaze start
 
 Configuration files are saved in your home in .rtorrent-wrb.conf
 If it does not exists then it is created with default values.
+
+
+** Configure rtorrent
+
+To use this web interface with rtorrent you must just add the line
+
+scgi_local = /path/to/where/you/want/rtorrent.socket
+
+in the rtorrent configuration file, and add that path as the configuration path in the web interface.
