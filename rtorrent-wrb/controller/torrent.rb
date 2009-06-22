@@ -84,10 +84,7 @@ class TorrentController < Controller
 
   def togglePause(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      sem.synchronize {
-          @current_torrent = @torrents_cache[id]
-          @current_torrent = (super.torrents)[id] if @current_torrent == nil
-      }
+      @current_torrent = (torrents)[id] if @current_torrent == nil
       if @current_torrent.active == 0 then
           sock.call("d.resume",id)
           sock.call("d.try_start",id)
@@ -98,10 +95,7 @@ class TorrentController < Controller
   end
 
   def remove(id=nil)
-      sem.synchronize {
-          @current_torrent = @torrents_cache[id]
-          @current_torrent = (super.torrents)[id] if @current_torrent == nil
-      }
+      @current_torrent = (torrents)[id] if @current_torrent == nil
       if @current_torrent != nil then
           sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
           #sock.call("d.delete_link",id)
@@ -150,18 +144,12 @@ class TorrentController < Controller
 
   def torrent_priority_up(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      sem.synchronize {
-          @current_torrent = @torrents_cache[id]
-          @current_torrent = (super.torrents)[id] if @current_torrent == nil
-      }
+      @current_torrent = (torrents)[id] if @current_torrent == nil
       p = @current_torrent.priority.to_i
       if p < 3 then
           p += 1
           sock.call("d.set_priority",id,p);
           action_cache.delete "/torrent/index"
-          sem.synchronize {
-              @torrents_cache[id].priority = p
-          }
       end
       return print_torrent_priority(p)
   end
