@@ -220,7 +220,7 @@ class TorrentController < Controller
   end
 
   def button_for_status(id)
-      x = Torrent[id]
+      x = torrents[id]
       if x.active != 1 then
           if x.downloaded >= x.size then
               return "start_seed"

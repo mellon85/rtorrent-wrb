@@ -58,6 +58,7 @@ class Controller < Ramaze::Controller
                            "d.is_active=","d.get_complete=",
                            "d.get_priority=","d.get_hash=")
       tlist.each do |t|
+          downloaded = t[2]
           chsize = t[7]
           chnum = t[8]
           chcmp = t[9]
@@ -66,7 +67,7 @@ class Controller < Ramaze::Controller
 
           size = chsize*chnum if size < chsize*chnum
           downloaded = chsize*chcmp if downloaded < chsize*chcmp
-          uploaded = downloaded*ratio/1000.0
+          uploaded = downloaded*t[10]/1000.0
           
           torrent = Torrent.new(t[0],size,downloaded,uploaded,t[3],t[4],
                                 t[10],t[11],t[13],t[14])
