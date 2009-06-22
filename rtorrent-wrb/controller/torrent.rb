@@ -37,13 +37,13 @@ class TorrentController < Controller
 
   def index
       @title = "rTorrent: All Torrents"
-      @torrents = super.torrents.values 
+      @torrents = torrents.values 
       @view_name = "All"
   end
 
   def completed
       @title = "rTorrent: Completed Torrents"
-      @torrents = super.torrents.values
+      @torrents = torrents.values
       @torrents.delete_if {|x| x.downloaded < x.size}
       @view_name = "Completed"
       render_template :index
@@ -51,7 +51,7 @@ class TorrentController < Controller
 
   def seeding
       @title = "rTorrent: Seeding"
-      @torrents = super.torrents.values
+      @torrents = torrents.values
       @torrents.delete_if {|x| x.active == 0 && x.downloaded < x.size}
       @view_name = "Seeding"
       render_template :index
@@ -59,7 +59,7 @@ class TorrentController < Controller
 
   def downloading
       @title = "rTorrent: Downloading"
-      @torrents = super.torrents.values
+      @torrents = torrents.values
       @torrents.delete_if {|x| x.downloaded >= x.size}
       @view_name = "Downloading"
       render_template :index
