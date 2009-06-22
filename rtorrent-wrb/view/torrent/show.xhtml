@@ -35,12 +35,12 @@ function priority_down(id,p,i) {
 <!-- torrents -->
 <?r if @current_torrent != nil then ?>
 <div id="torrent">
-    Torrent hash: #{@current_torrent[:torrent_id]}
+    Torrent hash: @hash
 </div>
 <div id="removeBox" style="background-color:white">
 <p style="color:black">Do you really want to remove this torrent?</p>
 <center>
-    <form action="/torrent/remove/#{@current_torrent[:torrent_id]}" method="GET">
+    <form action="/torrent/remove/#{@hash}" method="GET">
         <div>
             <input type="submit" value="Yes">
             <input type="button" onclick="$.closeOverlay()" value="No">
@@ -53,24 +53,24 @@ function priority_down(id,p,i) {
 <div id="filespane">
 <table id="filesTable" border="0">
 <form action="#{Rs(:set_priority)}" method="post" enctype="multipart/form-data">
-  <input type="hidden" name="torrentID" value="#{@current_torrent.torrent_id}" />
+  <input type="hidden" name="torrentID" value="#{@hash}" />
 <thead>
   <tr></th><th><th>File Name</th><th>Size</th><th>Downloaded</th><th></th><th>Priority</th><th></th></tr>
 </thead>
 <tbody>
   <?r i = 0 ?>
-  <?r @current_torrent.torrentfiles.each do |x| ?>
+  <?r files(@hash).each do |x| ?>
   <tr>
      <th><input type="checkbox" name="selectedFiles[]" value="#{i}"></th>
-      <th align="left">#{x[:name]}</th>
+      <th align="left">#{x.name}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
       <th align="right">#{convert_bytes(x.downloaded)}</th>
       <th>
-<a onclick="priority_up('#{@current_torrent[:torrent_id]}',#{x.priority},#{i})">+</a>
+<a onclick="priority_up('#{@hash}',#{x.priority},#{i})">+</a>
       </th>
       <th><div id="prio#{i}">#{print_priority(x.priority)}</div></th>
       <th>
-<a onclick="priority_down('#{@current_torrent[:torrent_id]}',#{x.priority},#{i})">-</a>
+<a onclick="priority_down('#{@hash}',#{x.priority},#{i})">-</a>
       </th></tr>
   <?r i+=1 ?>
   <?r end ?>
@@ -89,7 +89,7 @@ function priority_down(id,p,i) {
 <div id="trackers">
     <p><b onclick="$('#trackerpane').toggle('slow')">Trackers</b><br>
 <div id="trackerpane">
-<?r @current_torrent.trackers.each do |x| ?>
+<?r trackers(@hash).each do |x| ?>
     <?r if !(x.url =~ /dht\:/) then ?>
     #{x.url}<br>
     <?r end ?>

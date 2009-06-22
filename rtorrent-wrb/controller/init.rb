@@ -28,7 +28,7 @@ class Controller < Ramaze::Controller
         chnum = t[2]
         chdone = t[3]
         downloaded = t[1]
-        downloaded = chdone*chsize if chdone*chsize < f.size
+        downloaded = chdone*chsize if chdone*chsize < t[1]
         files << TorrentFile.new(t[0],t[1],downloaded,t[4])
      end
      return files

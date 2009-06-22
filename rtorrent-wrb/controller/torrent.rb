@@ -69,7 +69,9 @@ class TorrentController < Controller
       begin
           @peers = show_peers(id)
           # obtain name from rtorrent given the id
+          @current_torrent = torrents[id]
           @title = @current_torrent.name
+          @hash = id
       rescue Exception => e
           redirect '/torrent'
       end
@@ -167,12 +169,13 @@ class TorrentController < Controller
   #TODO
   def torrent_priority_down(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      p = Torrent[id].priority.to_i
+      t = torrents[id]
+      p = t.priority.to_i
       if p > 0 then
           p -= 1
           sock.call("d.set_priority",id,p);
           action_cache.delete "/torrent/index"
-          Torrent[id].update(:priority => p)
+          t.update(:priority => p)
       end
       return print_torrent_priority(p)
   end
