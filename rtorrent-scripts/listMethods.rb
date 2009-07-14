@@ -10,3 +10,4 @@ puts rtorrent.call("system.listMethods")
 torrents = []
 torrents = rtorrent.call("d.multicall","","d.get_base_path=")
 pp torrents
+rtorrent.call("set_download_rate", "10")

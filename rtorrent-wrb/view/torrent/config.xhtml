@@ -1,3 +1,4 @@
+RTorrent-WRB Config
 <form method="POST" action="#{Rs(:save_config)}">
     <table border="0">
         <tr><th>Username</th>
@@ -16,6 +17,19 @@
             <th><input type="text" name="save_path"
                 value="#{$conf[:torrent_save_path]}"/></th></tr>
     </table><br/>
-    <input type="submit" name="login" />
+    <input type="submit" name="login" value="Store config" />
 </form>
+
+
+RTorrent Config
+
+<form method="POST" action="#{Rs(:setMaxUp)}">
+    <input type="number" name="maxUp" value="Set Upload" />
+    <input type="submit" name="changeUp" value="Set Upload" />
+</form>
+<form method="POST" action="#{Rs(:setMaxDown)}">
+    <input type="number" name="maxDown" value="Set Download" />
+    <input type="submit" name="changeDown" value="Set Download" />
+</form>
+
 <p><a href="#{Rs(:index)}">back</a></p>

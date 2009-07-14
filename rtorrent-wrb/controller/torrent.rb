@@ -184,6 +184,20 @@ class TorrentController < Controller
       redirect :index
   end
 
+  def setMaxUp
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      up = request[:maxUp]
+      sock.call("set_upload_rate", up.to_i*1024)
+      redirect :index
+  end
+
+  def setMaxDown
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      down = request[:maxDown]
+      sock.call("set_download_rate", down.to_i*1024)
+      redirect :index
+  end
+      
   def send_torrent
       @title="Send Torrent"
   end
