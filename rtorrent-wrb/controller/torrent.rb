@@ -25,7 +25,10 @@ class TorrentController < Controller
                           :priority_up,
                           :priority_down,
                           :torrent_priority_up,
-                          :torrent_priority_down]
+                          :torrent_priority_down,
+                          :upspeed,
+                          :downspeed]
+
   def sha1(text)
       require 'digest/sha1'
       Digest::SHA1.hexdigest(text)
@@ -75,6 +78,16 @@ class TorrentController < Controller
       rescue Exception => e
           redirect '/torrent'
       end
+  end
+
+  def upspeed() 
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      return sock.call("get_up_rate").to_i / 1024.0
+  end
+  
+  def downspeed() 
+      sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
+      return sock.call("get_down_rate").to_i / 1024.0
   end
 
   def show_peers(id=nil)

@@ -2,7 +2,6 @@
 
 <h1>Torrent List: #{@view_name}</h1>
 
-<script type="text/javascript" src="/js/jquery.js"></script>
 <script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
 <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
 <script language="javascript">
@@ -23,6 +22,13 @@ function priority_down(id) {
         },"text");
 }
 </script>
+
+<div id="up_speed">
+    Upload: #{ sprintf("%.2f",upspeed) }
+</div>
+<div id="down_speed">
+    Download: #{ sprintf("%.2f",downspeed) }
+</div>
 
 <p><div id="tabs">
     <a href="#{Rs(:index)}">All</a>
