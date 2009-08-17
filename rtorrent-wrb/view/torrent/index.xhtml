@@ -73,7 +73,12 @@ function change_status(id) {
 
         <a href="/torrent/show/#{x.torrent_id}">#{x.name}</a></th>
     <th>#{convert_bytes(x.size)}</th>
-    <th>#{convert_bytes(x.downloaded)}</th>
+    <th><?r if x.downloaded == x.size then ?>
+        Done!
+        <?r else ?>
+        #{convert_bytes(x.downloaded)}
+        <?r end ?>
+    </th>
     <th>#{convert_bytes(x.uploaded)}</th>
     <th>#{convert_bytes(x.down)}</th>
     <th>#{convert_bytes(x.up)}</th>
