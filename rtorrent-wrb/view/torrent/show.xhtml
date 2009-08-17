@@ -61,7 +61,13 @@ function priority_down(id,p,i) {
      <th><input type="checkbox" name="selectedFiles[]" value="#{i}"></th>
       <th align="left">#{x.name}</th>
       <th align="right">#{convert_bytes(x.size)}</th>
-      <th align="right">#{convert_bytes(x.downloaded)}</th>
+      <th align="right">
+        <?r if x.downloaded == x.size then ?>
+        Done!
+        <?r else ?>
+        #{convert_bytes(x.downloaded)}
+        <?r end ?>
+      </th>
       <th>
 <a onclick="priority_up('#{@hash}',#{x.priority},#{i})">+</a>
       </th>

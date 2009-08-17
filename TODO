@@ -5,3 +5,7 @@ TODO
 - File list subdivided in folders
 - Size from rtorrent should be more precise
 - Bandwidth Managment and scheduling (Better control)
+
+BUGS
+
+- "Seeding view" shows also paused torrents
