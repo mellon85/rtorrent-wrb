@@ -53,9 +53,9 @@ class TorrentController < Controller
   end
 
   def seeding
-      @title = "rTorrent: Seeding"
+      @title = "rTorrent: Seeding Torrents"
       @torrents = torrents.values
-      @torrents.delete_if {|x| x.active == 0 && x.downloaded < x.size}
+      @torrents.delete_if {|x| x.downloaded < x.size || x.active == 0 }
       @view_name = "Seeding"
       render_template :index
   end
