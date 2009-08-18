@@ -1,6 +1,6 @@
 <small>version #{@version}/#{@library}</small><br/>
 
-<h1>Torrent List: #{@view_name}</h1>
+<div class="title">Torrent List: #{@view_name}</div>
 
 <script type="text/javascript" src="/js/jquery.joverlay.min.js"></script>
 <script type="text/javascript" src="/js/jquery.tablesorter.min.js"></script>
@@ -116,7 +116,7 @@ $(function(){
 </div>
 <?r end ?>
 <p>
-<a href="#{Rs(:logout)}">logout</a>
-<a href="#{Rs(:config)}">configure</a>
-<a href="#{Rs(:send_torrent)}">send torrent</a>
+<div id="logout"><a href="#{Rs(:logout)}">logout</a></div>
+<div id="configure"><a href="#{Rs(:config)}">configure</a></div>
+<div id="send"><a href="#{Rs(:send_torrent)}">send torrent</a></div>
 </p>

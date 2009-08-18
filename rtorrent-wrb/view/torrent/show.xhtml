@@ -2,7 +2,7 @@
 <a href="/torrent">back</a>
 <a href="#{Rs(:logout)}">logout</a>
 </p>
-<p><h3>#{@title}</h3></p><br/>
+<div class="title">#{@title}</div>
 <button onclick="$('#removeBox').jOverlay({color:'red', opacity:
     0.6});">Remove</button>
 <script type="text/javascript" src="/js/jquery.js"></script>
@@ -131,6 +131,6 @@ function priority_down(id,p,i) {
 </div>
 <?r end ?>
 <p>
-<a href="/torrent">back</a>
-<a href="#{Rs(:logout)}">logout</a>
+<div id="back"><a href="/torrent">back</a></div>
+<div id="logout"><a href="#{Rs(:logout)}">logout</a></div>
 </p>

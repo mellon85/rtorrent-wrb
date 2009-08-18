@@ -1,4 +1,5 @@
-RTorrent-WRB Config
+<div class="title">RTorrent Config</div>
+<div id="config">
 <form method="POST" action="#{Rs(:save_config)}">
     <table border="0">
         <tr><th>Username</th>
@@ -19,10 +20,9 @@ RTorrent-WRB Config
     </table><br/>
     <input type="submit" name="login" value="Store config" />
 </form>
+</div>
 
-
-RTorrent Config
-
+<div id="speed_config">
 <form method="POST" action="#{Rs(:setMaxUp)}">
     <input type="number" name="maxUp" value="Set Upload" />
     <input type="submit" name="changeUp" value="Set Upload" />
@@ -31,5 +31,6 @@ RTorrent Config
     <input type="number" name="maxDown" value="Set Download" />
     <input type="submit" name="changeDown" value="Set Download" />
 </form>
+</div>
 
-<p><a href="#{Rs(:index)}">back</a></p>
+<div id="back"><a href="#{Rs(:index)}">back</a></div>
