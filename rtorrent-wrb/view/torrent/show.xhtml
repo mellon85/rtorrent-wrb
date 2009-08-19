@@ -36,13 +36,29 @@ function priority_down(id,p,i) {
 <?r if @current_torrent != nil then ?>
 <div id="removeBox" style="background-color:white">
 <p style="color:black">Do you really want to remove this torrent?</p>
-<center>
+<!-- <center>
     <form action="/torrent/remove/#{@hash}" method="GET">
         <div>
             <input type="submit" value="Yes">
             <input type="button" onclick="$.closeOverlay()" value="No">
         </div>
     </form>
+</center> -->
+<center>
+    <form action="/torrent/remove/#{@hash}/false" method="GET">
+        <div>
+            <input type="submit" value="Remove Torrent">
+            <!-- <input type="button" onclick="$.closeOverlay()" value="I
+            changed my mind!"> -->
+        </div>
+    </form>
+    <form action="/torrent/remove/#{@hash}/true" method="GET">
+        <div>
+            <input type="submit" value="Remove Torrent and Delete
+            Files">
+        </div>
+    </form>
+    <button onclick="$.closeOverlay()">I changed my mind!</button>
 </center>
 </div>
 <div id="files">
