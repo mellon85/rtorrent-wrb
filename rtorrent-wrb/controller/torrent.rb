@@ -107,12 +107,16 @@ class TorrentController < Controller
       action_cache.delete "/torrent/index"
   end
 
-  def remove(id=nil)
+  def remove(id=nil, del=nil)
       @current_torrent = (torrents)[id] if @current_torrent == nil
       if @current_torrent != nil then
           sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-          #sock.call("d.delete_link",id)
           sock.call("d.stop",id)
+          #sock.call("d.delete_link",id)
+          if del == 'true' then
+            path = sock.call("d.get_base_path",id)
+            FileUtils.rm_rf(path)
+          end
           sock.call("d.erase",id)
           action_cache.delete "/torrent/index"
       end

@@ -106,12 +106,20 @@ $(function(){
 <div id="removeBox_#{x.torrent_id}" style="background-color:white">
 <p style="color:black">Do you really want to remove this torrent?</p>
 <center>
-    <form action="/torrent/remove/#{x.torrent_id}" method="GET">
+    <form action="/torrent/remove/#{x.torrent_id}/false" method="GET">
         <div>
-            <input type="submit" value="Yes">
-            <input type="button" onclick="$.closeOverlay()" value="No">
+            <input type="submit" value="Remove Torrent">
+            <!-- <input type="button" onclick="$.closeOverlay()" value="I
+            changed my mind!"> -->
         </div>
     </form>
+    <form action="/torrent/remove/#{x.torrent_id}/true" method="GET">
+        <div>
+            <input type="submit" value="Remove Torrent and Delete
+            Files">
+        </div>
+    </form>
+    <button onclick="$.closeOverlay()">I changed my mind!</button>
 </center>
 </div>
 <?r end ?>

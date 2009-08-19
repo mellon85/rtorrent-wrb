@@ -96,3 +96,4 @@ end
 require 'controller/main'
 require 'controller/torrent'
 require 'SCGIxml'
+require 'fileutils'
