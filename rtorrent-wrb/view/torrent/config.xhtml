@@ -17,6 +17,9 @@
         <tr><th>Torrent Save Path</th>
             <th><input type="text" name="save_path"
                 value="#{$conf[:torrent_save_path]}"/></th></tr>
+        <tr><th>Check Disk</th>
+            <th><input type="text" name="check_disk"
+                value="#{$conf[:check_disk]}"/></th></tr>
     </table><br/>
     <input type="submit" name="login" value="Store config" />
 </form>
@@ -32,5 +35,4 @@
     <input type="submit" name="changeDown" value="Set Download" />
 </form>
 </div>
-
 <div id="back"><a href="#{Rs(:index)}">back</a></div>

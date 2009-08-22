@@ -319,6 +319,15 @@ class TorrentController < Controller
       end
   end
 
+  def free_disk_space
+      freespace = []
+      $conf[:check_disk].each do |p|
+          freespace << p
+          freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
+      end
+      return freespace
+  end
+
   def version
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       @pid = sock.call("system.pid")

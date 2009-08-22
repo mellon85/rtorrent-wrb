@@ -123,6 +123,12 @@ $(function(){
 </center>
 </div>
 <?r end ?>
+
+<?r freespace = free_disk_space ?>
+<?r (0..freespace.length/2-1).each do |x| ?>
+Available #{freespace[2*x+1]} on #{freespace[2*x]}<br>
+<?r end ?>
+
 <p>
 <div id="logout"><a href="#{Rs(:logout)}">logout</a></div>
 <div id="configure"><a href="#{Rs(:config)}">configure</a></div>
