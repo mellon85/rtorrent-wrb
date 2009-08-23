@@ -325,7 +325,7 @@ class TorrentController < Controller
       if $conf[:check_disk] == nil then
           return [0.to_s]
       end
-      $conf[:check_disk].each do |p|
+      $conf[:check_disk].split(',').each do |p|
           freespace << p
           freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
       end
