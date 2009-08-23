@@ -321,6 +321,9 @@ class TorrentController < Controller
 
   def free_disk_space
       freespace = []
+      if $conf[:check_disk] == nil then
+          return [0.to_s]
+      end
       $conf[:check_disk].each do |p|
           freespace << p
           freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
