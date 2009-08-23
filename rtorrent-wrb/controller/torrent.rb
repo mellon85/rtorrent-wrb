@@ -197,6 +197,7 @@ class TorrentController < Controller
       $conf[:update_time]  = request[:update_time].to_i
       $conf[:username]     = request[:username]
       $conf[:torrent_save_path] = request[:save_path]
+      $conf[:check_disk] = request[:check_disk]
       save_conf_to_file
       redirect :index
   end
