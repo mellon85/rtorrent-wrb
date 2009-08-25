@@ -6,6 +6,6 @@ TODO
 - Size from rtorrent should be more precise
 - Bandwidth Managment and scheduling (Better control)
 
-BUGS
+CSS
 
-- "Seeding view" shows also paused torrents
+- Fixed objects in all pages (up/down,title,menu) ?

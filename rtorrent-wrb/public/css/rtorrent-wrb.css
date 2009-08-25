@@ -1,4 +1,48 @@
 .title {
+    position:fixed;
     font-weight: bold;
     font-size: 30px;
+    top:10px;
+}
+
+#tabs {
+    font-size: 15px;
+    position: fixed;
+    top:50px;
+    left:50px;
+}
+
+#version {
+    font-size: 13px;
+    position:fixed;
+    top:10px;
+    right:10px;
+}
+
+#speed {
+    position:fixed;
+    bottom:90%;
+    width:100%;
+}
+
+#up_speed {
+    position:fixed;
+    font-size=15px;
+    bottom:5px;
+    right:5px;
+}
+
+#down_speed {
+    position:fixed;
+    font-size=15px;
+    bottom:20px;
+    right:5px;
+}
+
+#freespace {
+    position:fixed;
+    font-size=15px;
+    bottom:5px;
+    left:5px;
+    width:100%;
 }
