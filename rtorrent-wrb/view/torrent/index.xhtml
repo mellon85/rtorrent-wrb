@@ -1,4 +1,3 @@
-<div id="version">version #{@version}/#{@library}</div>
 
 <div class="title">Torrent List: #{@view_name}</div>
 
@@ -23,14 +22,6 @@ function priority_down(id) {
 }
 </script>
 
-<div id="speed">
-    <div id="up_speed">
-        Upload: #{ sprintf("%.2f",upspeed) }
-    </div>
-    <div id="down_speed">
-        Download: #{ sprintf("%.2f",downspeed) }
-    </div>
-</div>
 
 <p><div id="tabs" class="views">
     <a href="#{Rs(:index)}">All</a>
@@ -126,12 +117,6 @@ $(function(){
 </div>
 <?r end ?>
 
-<div id="freespace">
-<?r freespace = free_disk_space ?>
-<?r (0..freespace.length/2-1).each do |x| ?>
-Available #{freespace[2*x+1]} on #{freespace[2*x]}<br>
-<?r end ?>
-</div>
 
 <p>
 <div id="logout"><a href="#{Rs(:logout)}">logout</a></div>

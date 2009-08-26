@@ -1,12 +1,12 @@
 <?r if logged_in? == false then ?>
 <div class="title">Login</div>
-<form method="POST" action="#{Rs(:login)}">
+<form method="post" action="#{Rs(:login)}">
     <table border="0">
         <tr><th>Username</th>
             <th><input type="text" name="username" /></th></tr>
         <tr><th>Password</th>
             <th><input type="password" name="password" /></th></tr>
-    </table><br/>
+    </table>
     <input type="submit" name="login" />
 </form>
 <?r else ?>

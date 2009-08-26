@@ -27,7 +27,8 @@ class RTorrentApp < RTorrentController
                           :torrent_priority_up,
                           :torrent_priority_down,
                           :upspeed,
-                          :downspeed]
+                          :downspeed,
+                          :free_disk_space]
 
   def sha1(text)
       require 'digest/sha1'
@@ -170,7 +171,6 @@ class RTorrentApp < RTorrentController
       return print_torrent_priority(p)
   end
 
-  #TODO
   def torrent_priority_down(id=nil)
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
       t = torrents[id]
@@ -255,6 +255,22 @@ class RTorrentApp < RTorrentController
               return "pause"
           end
       end
+  end
+
+  def free_disk_space
+      freespace = []
+      if $conf[:check_disk] == nil then
+          return [0.to_s]
+      end
+      $conf[:check_disk].split(',').each do |p|
+          freespace << p
+          freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
+      end
+      str = ""
+      (0..freespace.length/2-1).each do |i|
+          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"\n"
+      end
+      return str
   end
 
   private
