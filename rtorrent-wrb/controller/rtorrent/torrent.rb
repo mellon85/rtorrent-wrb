@@ -1,4 +1,4 @@
-class TorrentController < Controller
+class RTorrentApp < RTorrentController
   helper :cache
   helper :auth
 
@@ -278,7 +278,6 @@ class TorrentController < Controller
   def print_ratio(ratio)
       return sprintf('%.02f', ratio/1000.0)
   end
-
 
   def login_required
     flash[:error] = 'login required to view that page' unless logged_in?

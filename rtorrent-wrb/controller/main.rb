@@ -5,13 +5,13 @@
 #  map '/otherurl'
 # this will force the controller to be mounted on: /otherurl
 
-class MainController < Controller
-  # the index action is called automatically when no other action is specified
+RTorrentApp.map("/torrent")
 
+class MainController < Ramaze::Controller
     def index
         redirect "/torrent"
     end
-
 end
 
 MainController.map("/")
+

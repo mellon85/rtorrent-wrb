@@ -4,7 +4,7 @@
 require 'xmlrpc/client'
 require 'xmlrpc/xmlrpcs'
 require 'socket'
-require 'scgi'
+require 'controller/rtorrent/scgi'
 
 class SCGIXMLClient < XMLRPC::ClientS
     def new_socket( info, async )
