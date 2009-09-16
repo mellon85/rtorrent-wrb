@@ -1,5 +1,6 @@
 <?r if logged_in? == false then ?>
 <div class="title">Login</div>
+<div class="data">
 <form method="post" action="#{Rs(:login)}">
     <table border="0">
         <tr><th>Username</th>
@@ -12,3 +13,4 @@
 <?r else ?>
 #{A(:logout)}
 <?r end ?>
+</div>

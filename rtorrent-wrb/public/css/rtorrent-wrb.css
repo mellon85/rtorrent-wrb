@@ -5,6 +5,11 @@
     top:10px;
 }
 
+.data {
+    position: absolute;
+    top: 100px;
+}
+
 #tabs {
     font-size: 15px;
     position: fixed;

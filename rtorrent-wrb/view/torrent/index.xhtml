@@ -23,13 +23,8 @@ function priority_down(id) {
 </script>
 
 
-<p><div id="tabs" class="views">
-    <a href="#{Rs(:index)}">All</a>
-    <a href="#{Rs(:completed)}">Completed</a>
-    <a href="#{Rs(:downloading)}">Downloading</a>
-    <a href="#{Rs(:seeding)}">Seeding</a>
-</div></p>
 
+<div class="data">
 
 </p><div id="torrents">
 <?r if @torrents.empty? then ?>
@@ -116,10 +111,5 @@ $(function(){
 </center>
 </div>
 <?r end ?>
+</div>
 
-
-<p>
-<div id="logout"><a href="#{Rs(:logout)}">logout</a></div>
-<div id="configure"><a href="#{Rs(:config)}">configure</a></div>
-<div id="send"><a href="#{Rs(:send_torrent)}">send torrent</a></div>
-</p>
