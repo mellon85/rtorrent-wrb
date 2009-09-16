@@ -12,11 +12,36 @@
     <link rel="stylesheet" href="/css/rtorrent-wrb.css" />
     <script type="text/javascript"
       src="http://ajax.googleapis.com/ajax/libs/jquery/1.3.2/jquery.js" >
-  </script>
-  </head>
-    <body>
+    </script>
+    <script language="javascript">
+        function update_netUsage() {
+            $.get("/torrent/upspeed",{}
+              ,function(d) {
+              $("#up").text(d);
+              },"text");
 
-<p><div id="tabs" class="views">
+            $.get("/torrent/downspeed",{}
+              ,function(d) {
+              $("#down").text(d);
+              },"text");
+        }
+        function update_freeSpace() {
+            $.get("/torrent/free_disk_space",{}
+              ,function(d) {
+              $("#freespace").text(d);
+              },"text");
+        }
+        window.onload = function() {
+            update_netUsage();
+            update_freeSpace();
+        }
+        setInterval(update_netUsage, 5000);
+        setInterval(update_freeSpace, 1000);
+    </script>
+  </head>
+  <body>
+
+    <p><div id="tabs" class="views">
     <a href="#{Rs(:index)}">All</a>
     <a href="#{Rs(:completed)}">Completed</a>
     <a href="#{Rs(:downloading)}">Downloading</a>
@@ -24,28 +49,22 @@
     <a href="#{Rs(:logout)}">Logout</a>
     <a href="#{Rs(:config)}">Configure</a>
     <a href="#{Rs(:send_torrent)}">Send torrent</a>
-</div></p>
+    </div></p>
     
     <div id="version">version #{@version}/#{@library}</div>
 
     <div id="speed">
-        <div id="up_speed">
-            Upload: #{ sprintf("%.2f",upspeed) }
-        </div>
-        <div id="down_speed">
-            Download: #{ sprintf("%.2f",downspeed) }
-        </div>
+        <table id="net_usage">
+            <tr><td align="left">Upload:</td><td align="right"><div
+                  id="up"> </div></td></tr>
+            <tr><td align="left">Download:</td><td align="right"><div
+                  id="down"> </div></td></tr>
+        </table>
     </div>
     
-    <div id="freespace">
-        <?r freespace = free_disk_space ?>
-        <?r (0..freespace.length/2-1).each do |x| ?>
-        Available #{freespace[2*x+1]} on #{freespace[2*x]}<br/>
-        <?r end ?>
-    </div>
+    <div id="freespace"> </div>
 
-
-    <div id="content">
+    <div class="content" id="content">
       #@content
     </div>
   </body>

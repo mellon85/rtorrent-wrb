@@ -83,12 +83,14 @@ class RTorrentApp < RTorrentController
 
   def upspeed() 
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      return sock.call("get_up_rate").to_i / 1024.0
+      up = sock.call("get_up_rate").to_i / 1024.0
+      return sprintf("%.2f", up)
   end
   
   def downspeed() 
       sock = SCGIXMLClient.new([$conf[:rtorrent_socket],"/RPC2"])
-      return sock.call("get_down_rate").to_i / 1024.0
+      down = sock.call("get_down_rate").to_i / 1024.0
+      return sprintf("%.2f", down)
   end
 
   def show_peers(id=nil)
@@ -344,7 +346,12 @@ class RTorrentApp < RTorrentController
           freespace << p
           freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
       end
-      return freespace
+      str = ""
+      (0..freespace.length/2-1).each do |i|
+          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"\n"
+      end
+      puts str
+      return str
   end
 
   def version
