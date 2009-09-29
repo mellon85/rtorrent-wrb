@@ -28,7 +28,7 @@
         function update_freeSpace() {
             $.get("/torrent/free_disk_space",{}
               ,function(d) {
-              $("#freespace").text(d);
+              $("#freespace").html(d);
               },"text");
         }
         window.onload = function() {

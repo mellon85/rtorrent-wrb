@@ -270,7 +270,7 @@ class RTorrentApp < RTorrentController
       end
       str = ""
       (0..freespace.length/2-1).each do |i|
-          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"<br>"
+          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"<br />"
       end
       return str
   end
