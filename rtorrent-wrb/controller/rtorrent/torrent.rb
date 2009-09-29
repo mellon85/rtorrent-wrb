@@ -270,11 +270,10 @@ class RTorrentApp < RTorrentController
       end
       str = ""
       (0..freespace.length/2-1).each do |i|
-          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"\n"
+          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"<br>"
       end
       return str
   end
-
   private
   
   def convert_bytes(bytes)
@@ -335,23 +334,6 @@ class RTorrentApp < RTorrentController
       when 3
           return "High"
       end
-  end
-
-  def free_disk_space
-      freespace = []
-      if $conf[:check_disk] == nil then
-          return [0.to_s]
-      end
-      $conf[:check_disk].split(',').each do |p|
-          freespace << p
-          freespace << `df -hP #{p}`.split("\n")[1].split(" ")[3]
-      end
-      str = ""
-      (0..freespace.length/2-1).each do |i|
-          str = str+"Available "+freespace[2*i+1]+" on "+freespace[2*i]+"\n"
-      end
-      puts str
-      return str
   end
 
   def version
