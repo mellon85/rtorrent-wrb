@@ -1,5 +1,7 @@
 ** Rtorrent web interface
 
+Currently works with Ramaze Version 2009.02 (gem install ramaze -v 2009.02)
+
 To start it install ramaze and in the folder ramaze-wrb do
 
 ramaze start
